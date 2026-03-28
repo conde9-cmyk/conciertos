@@ -1,0 +1,15 @@
+{
+  "name": "Mis Conciertos",
+  "short_name": "MisConciertos",
+  "start_url": "/conciertos/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#ff0000",
+  "icons": [
+    {
+      "src": "https://conde9-cmyk.github.io/conciertos/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
