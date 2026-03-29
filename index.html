@@ -151,7 +151,9 @@ function render() {
   }
 }
 
-function getAno(e) { return e.ano !== undefined ? e.ano : e.año; }
+function getAno(e) { return e.ano !== undefined ? e.ano : (e["a\u00f1o"] || ""); }
+
+function escHtml(str) {
   if (!str) return '';
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
