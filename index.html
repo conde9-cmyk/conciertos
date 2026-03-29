@@ -14,45 +14,45 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Arial Black', Arial, sans-serif; background: #000; color: #fff; }
 #app { min-height: 100vh; background: #000; }
-.container { max-width: 500px; margin: 0 auto; padding: 20px; }
-.header { text-align: center; padding: 30px 20px; }
-.logo { font-size: 70px; margin-bottom: 10px; }
-.title { font-size: 40px; color: #f00; margin-bottom: 5px; text-transform: uppercase; }
-.subtitle { color: #999; font-size: 14px; text-transform: uppercase; }
-.btn { width: 100%; background: #1a0000; border: 2px solid #f00; border-radius: 10px; padding: 20px; margin-bottom: 15px; cursor: pointer; }
-.btn-text { font-size: 18px; font-weight: 900; color: #f00; text-transform: uppercase; }
-.card { background: #0a0000; border: 2px solid #f00; border-radius: 15px; padding: 25px; }
-.card-title { font-size: 28px; color: #f00; margin-bottom: 20px; text-transform: uppercase; }
-.back-btn { background: none; border: none; color: #f00; font-size: 14px; font-weight: 700; padding: 10px 0; margin-bottom: 15px; cursor: pointer; }
-.label { display: block; color: #f00; margin-bottom: 8px; font-size: 12px; text-transform: uppercase; font-weight: 900; }
-.input { width: 100%; padding: 12px; background: #000; border: 1px solid #f00; border-radius: 8px; color: #fff; font-size: 14px; margin-bottom: 15px; }
-.tipo-selector { display: flex; gap: 10px; margin-bottom: 15px; }
-.tipo-btn { flex: 1; padding: 12px; background: #000; border: 1px solid #f00; border-radius: 8px; color: #f00; font-weight: 900; cursor: pointer; }
+.container { width: 100%; padding: 10px; }
+.header { text-align: center; padding: 8px 15px; }
+.logo { font-size: 58px; margin-bottom: 2px; }
+.title { font-size: 36px; color: #f00; margin-bottom: 2px; text-transform: uppercase; }
+.subtitle { color: #999; font-size: 13px; text-transform: uppercase; }
+.btn { width: 100%; background: #1a0000; border: 2px solid #f00; border-radius: 10px; padding: 14px; margin-bottom: 8px; cursor: pointer; }
+.btn-text { font-size: 20px; font-weight: 900; color: #f00; text-transform: uppercase; }
+.card { background: #0a0000; border: 2px solid #f00; border-radius: 15px; padding: 15px; }
+.card-title { font-size: 28px; color: #f00; margin-bottom: 12px; text-transform: uppercase; }
+.back-btn { background: none; border: none; color: #f00; font-size: 15px; font-weight: 700; padding: 5px 0; margin-bottom: 8px; cursor: pointer; }
+.label { display: block; color: #f00; margin-bottom: 4px; font-size: 12px; text-transform: uppercase; font-weight: 900; }
+.input { width: 100%; padding: 10px; background: #000; border: 1px solid #f00; border-radius: 8px; color: #fff; font-size: 15px; margin-bottom: 10px; }
+.tipo-selector { display: flex; gap: 10px; margin-bottom: 10px; }
+.tipo-btn { flex: 1; padding: 10px; background: #000; border: 1px solid #f00; border-radius: 8px; color: #f00; font-weight: 900; cursor: pointer; font-size: 15px; }
 .tipo-btn.active { background: #f00; color: #000; }
-.submit-btn { width: 100%; padding: 15px; background: #f00; color: #000; border: none; border-radius: 8px; font-size: 16px; font-weight: 900; cursor: pointer; }
+.submit-btn { width: 100%; padding: 13px; background: #f00; color: #000; border: none; border-radius: 8px; font-size: 17px; font-weight: 900; cursor: pointer; }
 .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
 .stat-card { padding: 15px; border-radius: 12px; border: 2px solid; }
 .stat-concierto { background: linear-gradient(145deg, #ff0000, #8b0000); border-color: #ff0000; }
 .stat-festival { background: linear-gradient(145deg, #ffd700, #cc9900); border-color: #ffd700; }
-.stat-number { font-size: 28px; font-weight: 900; margin-bottom: 5px; }
-.stat-label { font-size: 11px; text-transform: uppercase; }
+.stat-number { font-size: 42px; font-weight: 900; margin-bottom: 5px; }
+.stat-label { font-size: 14px; text-transform: uppercase; }
 .stat-concierto .stat-number, .stat-concierto .stat-label { color: #fff; }
 .stat-festival .stat-number, .stat-festival .stat-label { color: #000; }
 .list-section { background: rgba(139,0,0,0.1); border: 1px solid #f00; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
-.list-title { color: #f00; margin-bottom: 12px; font-size: 14px; text-transform: uppercase; }
-.list-container { max-height: 250px; overflow-y: auto; }
-.list-item { background: #000; border: 1px solid #f00; padding: 12px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; cursor: pointer; }
-.list-name { color: #fff; font-weight: 700; font-size: 13px; }
-.list-badge { background: #f00; color: #000; padding: 4px 10px; border-radius: 15px; font-weight: 900; font-size: 11px; }
+.list-title { color: #f00; margin-bottom: 12px; font-size: 18px; text-transform: uppercase; }
+.list-container { max-height: 300px; overflow-y: auto; }
+.list-item { background: #000; border: 1px solid #f00; padding: 16px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; cursor: pointer; }
+.list-name { color: #fff; font-weight: 700; font-size: 18px; }
+.list-badge { background: #f00; color: #000; padding: 6px 14px; border-radius: 15px; font-weight: 900; font-size: 15px; }
 .evento-card { background: #1a0000; border: 1px solid #f00; padding: 15px; border-radius: 10px; margin-bottom: 12px; }
 .evento-tipo { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: 900; text-transform: uppercase; margin-bottom: 8px; }
 .tipo-concierto { background: #ff0000; color: #000; }
 .tipo-festival { background: #ffd700; color: #000; }
-.evento-nombre { color: #f00; font-size: 16px; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; }
-.evento-info { color: #999; font-size: 12px; margin-bottom: 4px; }
-.search-input { width: 100%; padding: 15px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #fff; font-size: 14px; margin-bottom: 20px; }
-.counter { text-align: center; color: #666; font-size: 12px; margin-top: 20px; }
-.delete-btn { background: none; border: none; cursor: pointer; padding: 5px; font-size: 18px; }
+.evento-nombre { color: #f00; font-size: 22px; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; }
+.evento-info { color: #999; font-size: 16px; margin-bottom: 4px; }
+.search-input { width: 100%; padding: 18px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #fff; font-size: 18px; margin-bottom: 20px; }
+.counter { text-align: center; color: #666; font-size: 16px; margin-top: 20px; }
+.delete-btn { background: none; border: none; cursor: pointer; padding: 5px; font-size: 24px; }
 </style>
 </head>
 <body>
@@ -65,7 +65,7 @@ var tipoD = '';
 var editando = null;
 var form = { tipo: 'concierto', nombre: '', grupos: '', ano: '', lugar: '', ciudad: '' };
 var search = '';
- 
+
 function render() {
   var app = document.getElementById('app');
   if (page === 'home') {
@@ -150,26 +150,26 @@ function render() {
     if (inp) { inp.focus(); inp.setSelectionRange(search.length, search.length); }
   }
 }
- 
+
 function escHtml(str) {
   if (!str) return '';
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
- 
+
 function goTo(p) {
   editando = null;
   form = { tipo: 'concierto', nombre: '', grupos: '', ano: '', lugar: '', ciudad: '' };
   page = p;
   render();
 }
- 
+
 function setTipo(t) { form.tipo = t; render(); }
- 
+
 function updateSearch(val) {
   search = val;
   render();
 }
- 
+
 function editar(id) {
   var evento = null;
   for (var i = 0; i < eventos.length; i++) { if (eventos[i].id === id) { evento = eventos[i]; break; } }
@@ -180,7 +180,7 @@ function editar(id) {
     render();
   }
 }
- 
+
 function guardar() {
   var nombre = document.getElementById('inNombre').value;
   var grupos = document.getElementById('inGrupos').value;
@@ -201,7 +201,7 @@ function guardar() {
   alert('Guardado! 🤘');
   goTo('home');
 }
- 
+
 function eliminar(id) {
   if (confirm('Eliminar este evento?')) {
     eventos = eventos.filter(function(e) { return e.id !== id; });
@@ -209,7 +209,7 @@ function eliminar(id) {
     render();
   }
 }
- 
+
 render();
 </script>
 <script>
@@ -221,5 +221,3 @@ if ('serviceWorker' in navigator) {
 </script>
 </body>
 </html>
- 
-
