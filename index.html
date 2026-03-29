@@ -1,395 +1,225 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="manifest" href="/conciertos/manifest.json">
-  <meta name="theme-color" content="#ff0000">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Mis Conciertos">
-  <title>🤘 Mis Conciertos</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Arial Black', Arial, sans-serif; background: #000; color: #fff; }
-    #app { min-height: 100vh; background: #000; }
-    .container { max-width: 500px; margin: 0 auto; padding: 20px; }
-    .header { text-align: center; padding: 30px 20px; }
-    .logo { font-size: 70px; margin-bottom: 10px; }
-    .title { font-size: 40px; color: #f00; margin-bottom: 5px; text-transform: uppercase; }
-    .subtitle { color: #999; font-size: 14px; text-transform: uppercase; }
-    .btn { width: 100%; background: #1a0000; border: 2px solid #f00; border-radius: 10px; padding: 20px; margin-bottom: 15px; cursor: pointer; }
-    .btn-text { font-size: 18px; font-weight: 900; color: #f00; text-transform: uppercase; }
-    .card { background: #0a0000; border: 2px solid #f00; border-radius: 15px; padding: 25px; }
-    .card-title { font-size: 28px; color: #f00; margin-bottom: 20px; text-transform: uppercase; }
-    .back-btn { background: none; border: none; color: #f00; font-size: 14px; font-weight: 700; padding: 10px 0; margin-bottom: 15px; cursor: pointer; }
-    .label { display: block; color: #f00; margin-bottom: 8px; font-size: 12px; text-transform: uppercase; font-weight: 900; }
-    .input { width: 100%; padding: 12px; background: #000; border: 1px solid #f00; border-radius: 8px; color: #fff; font-size: 14px; margin-bottom: 15px; }
-    .tipo-selector { display: flex; gap: 10px; margin-bottom: 15px; }
-    .tipo-btn { flex: 1; padding: 12px; background: #000; border: 1px solid #f00; border-radius: 8px; color: #f00; font-weight: 900; cursor: pointer; }
-    .tipo-btn.active { background: #f00; color: #000; }
-    .submit-btn { width: 100%; padding: 15px; background: #f00; color: #000; border: none; border-radius: 8px; font-size: 16px; font-weight: 900; cursor: pointer; }
-    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
-    .stat-card { padding: 15px; border-radius: 12px; border: 2px solid; }
-    .stat-concierto { background: linear-gradient(145deg, #ff0000, #8b0000); border-color: #ff0000; }
-    .stat-festival { background: linear-gradient(145deg, #ffd700, #cc9900); border-color: #ffd700; }
-    .stat-number { font-size: 28px; font-weight: 900; margin-bottom: 5px; }
-    .stat-label { font-size: 11px; text-transform: uppercase; }
-    .stat-concierto .stat-number, .stat-concierto .stat-label { color: #fff; }
-    .stat-festival .stat-number, .stat-festival .stat-label { color: #000; }
-    .list-section { background: rgba(139,0,0,0.1); border: 1px solid #f00; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
-    .list-title { color: #f00; margin-bottom: 12px; font-size: 14px; text-transform: uppercase; }
-    .list-container { max-height: 250px; overflow-y: auto; }
-    .list-item { background: #000; border: 1px solid #f00; padding: 12px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; cursor: pointer; }
-    .list-name { color: #fff; font-weight: 700; font-size: 13px; }
-    .list-badge { background: #f00; color: #000; padding: 4px 10px; border-radius: 15px; font-weight: 900; font-size: 11px; }
-    .evento-card { background: #1a0000; border: 1px solid #f00; padding: 15px; border-radius: 10px; margin-bottom: 12px; }
-    .evento-tipo { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: 900; text-transform: uppercase; margin-bottom: 8px; }
-    .tipo-concierto { background: #ff0000; color: #000; }
-    .tipo-festival { background: #ffd700; color: #000; }
-    .evento-nombre { color: #f00; font-size: 16px; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; }
-    .evento-info { color: #999; font-size: 12px; margin-bottom: 4px; }
-    .search-input { width: 100%; padding: 15px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #fff; font-size: 14px; margin-bottom: 20px; }
-    .counter { text-align: center; color: #666; font-size: 12px; margin-top: 20px; }
-    .delete-btn { background: none; border: none; cursor: pointer; padding: 5px; font-size: 18px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="/conciertos/manifest.json">
+<meta name="theme-color" content="#ff0000">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Mis Conciertos">
+<title>🤘 Mis Conciertos</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Arial Black', Arial, sans-serif; background: #000; color: #fff; }
+#app { min-height: 100vh; background: #000; }
+.container { max-width: 500px; margin: 0 auto; padding: 20px; }
+.header { text-align: center; padding: 30px 20px; }
+.logo { font-size: 70px; margin-bottom: 10px; }
+.title { font-size: 40px; color: #f00; margin-bottom: 5px; text-transform: uppercase; }
+.subtitle { color: #999; font-size: 14px; text-transform: uppercase; }
+.btn { width: 100%; background: #1a0000; border: 2px solid #f00; border-radius: 10px; padding: 20px; margin-bottom: 15px; cursor: pointer; }
+.btn-text { font-size: 18px; font-weight: 900; color: #f00; text-transform: uppercase; }
+.card { background: #0a0000; border: 2px solid #f00; border-radius: 15px; padding: 25px; }
+.card-title { font-size: 28px; color: #f00; margin-bottom: 20px; text-transform: uppercase; }
+.back-btn { background: none; border: none; color: #f00; font-size: 14px; font-weight: 700; padding: 10px 0; margin-bottom: 15px; cursor: pointer; }
+.label { display: block; color: #f00; margin-bottom: 8px; font-size: 12px; text-transform: uppercase; font-weight: 900; }
+.input { width: 100%; padding: 12px; background: #000; border: 1px solid #f00; border-radius: 8px; color: #fff; font-size: 14px; margin-bottom: 15px; }
+.tipo-selector { display: flex; gap: 10px; margin-bottom: 15px; }
+.tipo-btn { flex: 1; padding: 12px; background: #000; border: 1px solid #f00; border-radius: 8px; color: #f00; font-weight: 900; cursor: pointer; }
+.tipo-btn.active { background: #f00; color: #000; }
+.submit-btn { width: 100%; padding: 15px; background: #f00; color: #000; border: none; border-radius: 8px; font-size: 16px; font-weight: 900; cursor: pointer; }
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
+.stat-card { padding: 15px; border-radius: 12px; border: 2px solid; }
+.stat-concierto { background: linear-gradient(145deg, #ff0000, #8b0000); border-color: #ff0000; }
+.stat-festival { background: linear-gradient(145deg, #ffd700, #cc9900); border-color: #ffd700; }
+.stat-number { font-size: 28px; font-weight: 900; margin-bottom: 5px; }
+.stat-label { font-size: 11px; text-transform: uppercase; }
+.stat-concierto .stat-number, .stat-concierto .stat-label { color: #fff; }
+.stat-festival .stat-number, .stat-festival .stat-label { color: #000; }
+.list-section { background: rgba(139,0,0,0.1); border: 1px solid #f00; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
+.list-title { color: #f00; margin-bottom: 12px; font-size: 14px; text-transform: uppercase; }
+.list-container { max-height: 250px; overflow-y: auto; }
+.list-item { background: #000; border: 1px solid #f00; padding: 12px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; cursor: pointer; }
+.list-name { color: #fff; font-weight: 700; font-size: 13px; }
+.list-badge { background: #f00; color: #000; padding: 4px 10px; border-radius: 15px; font-weight: 900; font-size: 11px; }
+.evento-card { background: #1a0000; border: 1px solid #f00; padding: 15px; border-radius: 10px; margin-bottom: 12px; }
+.evento-tipo { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: 900; text-transform: uppercase; margin-bottom: 8px; }
+.tipo-concierto { background: #ff0000; color: #000; }
+.tipo-festival { background: #ffd700; color: #000; }
+.evento-nombre { color: #f00; font-size: 16px; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; }
+.evento-info { color: #999; font-size: 12px; margin-bottom: 4px; }
+.search-input { width: 100%; padding: 15px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #fff; font-size: 14px; margin-bottom: 20px; }
+.counter { text-align: center; color: #666; font-size: 12px; margin-top: 20px; }
+.delete-btn { background: none; border: none; cursor: pointer; padding: 5px; font-size: 18px; }
+</style>
 </head>
 <body>
-  <div id="app"></div>
-  <script>
-    let eventos = JSON.parse(localStorage.getItem('eventos') || '[]');
-    let page = 'home';
-    let detalle = null;
-    let tipoD = '';
-    let editando = null;
-    let form = { tipo: 'concierto', nombre: '', grupos: '', año: 2025, lugar: '', ciudad: '' };
-    let search = '';
-
-    function render() {
-      const app = document.getElementById('app');
-      
-      if (page === 'home') {
-        app.innerHTML = `
-          <div class="header">
-            <div class="logo">🤘</div>
-            <h1 class="title">Mis Conciertos</h1>
-            <p class="subtitle">Metal Archives</p>
-          </div>
-          <div class="container">
-            <button class="btn" onclick="goTo('agregar')">
-              <span class="btn-text">➕ Agregar</span>
-            </button>
-            <button class="btn" onclick="goTo('estadisticas')">
-              <span class="btn-text">📊 Stats</span>
-            </button>
-            <button class="btn" onclick="goTo('buscar')">
-              <span class="btn-text">🔍 Buscar</span>
-            </button>
-            <div class="counter">${eventos.length} eventos</div>
-          </div>
-        `;
-      }
-      
-      else if (page === 'agregar') {
-        app.innerHTML = `
-          <div class="container">
-            <button class="back-btn" onclick="goTo('home')">← Volver</button>
-            <div class="card">
-              <h2 class="card-title">${editando ? 'Editar' : 'Agregar'}</h2>
-              <label class="label">Tipo</label>
-              <div class="tipo-selector">
-                <button class="tipo-btn ${form.tipo === 'concierto' ? 'active' : ''}" onclick="setTipo('concierto')">Concierto</button>
-                <button class="tipo-btn ${form.tipo === 'festival' ? 'active' : ''}" onclick="setTipo('festival')">Festival</button>
-              </div>
-              <label class="label">Nombre *</label>
-              <input id="inNombre" class="input" value="${form.nombre}">
-              <label class="label">Grupos *</label>
-              <input id="inGrupos" class="input" value="${form.grupos}" placeholder="Separa con comas">
-              <label class="label">Año</label>
-              <input id="inAño" class="input" type="number" value="${form.año}">
-              <label class="label">Lugar</label>
-              <input id="inLugar" class="input" value="${form.lugar}">
-              <label class="label">Ciudad</label>
-              <input id="inCiudad" class="input" value="${form.ciudad}">
-              <button class="submit-btn" onclick="guardar()">${editando ? 'Actualizar' : 'Guardar'}</button>
-            </div>
-          </div>
-        `;
-      }
-      
-      else if (page === 'estadisticas') {
-        if (detalle) {
-          let evs = [];
-          if (tipoD === 'artista') evs = eventos.filter(e => e.grupos.split(',').map(g=>g.trim()).includes(detalle));
-          else if (tipoD === 'ciudad') evs = eventos.filter(e => e.ciudad === detalle);
-          else if (tipoD === 'lugar') evs = eventos.filter(e => e.lugar === detalle);
-          else if (tipoD === 'año') evs = eventos.filter(e => e.año.toString() === detalle);
-          
-          app.innerHTML = `
-            <div class="container">
-              <button class="back-btn" onclick="detalle=null;render()">← Stats</button>
-              <div class="card">
-                <h2 class="card-title">${detalle}</h2>
-                <p style="color:#999;margin-bottom:15px">${evs.length} evento${evs.length!==1?'s':''}</p>
-                ${evs.map(e => `
-                  <div class="evento-card">
-                    <div style="display:flex;justify-content:space-between">
-                      <div>
-                        <div class="evento-tipo tipo-${e.tipo}">${e.tipo}</div>
-                        <h3 class="evento-nombre">${e.nombre}</h3>
-                      </div>
-                      <div style="display:flex;gap:10px">
-                        <button class="delete-btn" onclick="editar(${e.id})" style="color:#ff0">✏️</button>
-                        <button class="delete-btn" onclick="eliminar(${e.id})" style="color:#f00">×</button>
-                      </div>
-                    </div>
-                    <div class="evento-info">🎸 ${e.grupos}</div>
-                    <div class="evento-info">📅 ${e.año}</div>
-                    ${e.lugar ? `<div class="evento-info">🏟️ ${e.lugar}</div>` : ''}
-                    ${e.ciudad ? `<div class="evento-info">📍 ${e.ciudad}</div>` : ''}
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-          `;
-          return;
-        }
-
-        const arts = {};
-        eventos.forEach(e => e.grupos.split(',').map(g=>g.trim()).filter(g=>g).forEach(a => arts[a] = (arts[a]||0)+1));
-        const artList = Object.entries(arts).sort((a,b)=>b[1]-a[1]).slice(0,15);
-        
-        const cities = {};
-        eventos.forEach(e => { if(e.ciudad) cities[e.ciudad] = (cities[e.ciudad]||0)+1 });
-        const cityList = Object.entries(cities).sort((a,b)=>b[1]-a[1]).slice(0,10);
-        
-        const places = {};
-        eventos.forEach(e => { if(e.lugar) places[e.lugar] = (places[e.lugar]||0)+1 });
-        const placeList = Object.entries(places).sort((a,b)=>b[1]-a[1]).slice(0,10);
-        
-        const years = {};
-        eventos.forEach(e => { if(e.año) years[e.año] = (years[e.año]||0)+1 });
-        const yearList = Object.entries(years).sort((a,b)=>b[0]-a[0]);
-        
-        const conc = eventos.filter(e=>e.tipo==='concierto').length;
-        const fest = eventos.filter(e=>e.tipo==='festival').length;
-        
-        app.innerHTML = `
-          <div class="container">
-            <button class="back-btn" onclick="goTo('home')">← Volver</button>
-            <div class="card">
-              <h2 class="card-title">Stats</h2>
-              <div class="stat-grid">
-                <div class="stat-card stat-concierto">
-                  <div class="stat-number">${conc}</div>
-                  <div class="stat-label">Conciertos</div>
-                </div>
-                <div class="stat-card stat-festival">
-                  <div class="stat-number">${fest}</div>
-                  <div class="stat-label">Festivales</div>
-                </div>
-              </div>
-              
-              ${artList.length > 0 ? `
-                <div class="list-section">
-                  <h3 class="list-title">🎸 Artistas</h3>
-                  <div class="list-container">
-                    ${artList.map(([a,v]) => `
-                      <div class="list-item" onclick="detalle='${a.replace(/'/g,"\\'")}';tipoD='artista';render()">
-                        <span class="list-name">${a}</span>
-                        <span class="list-badge">${v}x</span>
-                      </div>
-                    `).join('')}
-                  </div>
-                </div>
-              ` : ''}
-              
-              ${cityList.length > 0 ? `
-                <div class="list-section">
-                  <h3 class="list-title">📍 Ciudades</h3>
-                  <div class="list-container">
-                    ${cityList.map(([c,v]) => `
-                      <div class="list-item" onclick="detalle='${c.replace(/'/g,"\\'")}';tipoD='ciudad';render()">
-                        <span class="list-name">${c}</span>
-                        <span class="list-badge">${v}x</span>
-                      </div>
-                    `).join('')}
-                  </div>
-                </div>
-              ` : ''}
-              
-              ${placeList.length > 0 ? `
-                <div class="list-section">
-                  <h3 class="list-title">🏟️ Venues</h3>
-                  <div class="list-container">
-                    ${placeList.map(([l,v]) => `
-                      <div class="list-item" onclick="detalle='${l.replace(/'/g,"\\'")}';tipoD='lugar';render()">
-                        <span class="list-name">${l}</span>
-                        <span class="list-badge">${v}x</span>
-                      </div>
-                    `).join('')}
-                  </div>
-                </div>
-              ` : ''}
-              
-              ${yearList.length > 0 ? `
-                <div class="list-section">
-                  <h3 class="list-title">📅 Años</h3>
-                  <div class="list-container">
-                    ${yearList.map(([y,c]) => `
-                      <div class="list-item" onclick="detalle='${y}';tipoD='año';render()">
-                        <span class="list-name">${y}</span>
-                        <span class="list-badge">${c}</span>
-                      </div>
-                    `).join('')}
-                  </div>
-                </div>
-              ` : ''}
-            </div>
-          </div>
-        `;
-      }
-      
-      else if (page === 'buscar') {
-        const filt = eventos.filter(e => {
-          const s = search.toLowerCase();
-          return e.nombre.toLowerCase().includes(s) || e.grupos.toLowerCase().includes(s) || 
-                 e.ciudad.toLowerCase().includes(s) || e.lugar.toLowerCase().includes(s) || 
-                 e.año.toString().includes(s);
-        });
-        
-        app.innerHTML = `
-          <div class="container">
-            <button class="back-btn" onclick="goTo('home')">← Volver</button>
-            <div class="card">
-              <h2 class="card-title">Buscar</h2>
-              <input id="searchInput" class="search-input" placeholder="Buscar..." value="${search}" oninput="updateSearch(this.value)">
-              ${filt.length === 0 ? `
-                <p style="text-align:center;color:#666;padding:30px">${search ? 'Sin resultados' : 'Escribe para buscar'}</p>
-              ` : filt.map(e => `
-                <div class="evento-card">
-                  <div style="display:flex;justify-content:space-between">
-                    <div>
-                      <div class="evento-tipo tipo-${e.tipo}">${e.tipo}</div>
-                      <h3 class="evento-nombre">${e.nombre}</h3>
-                    </div>
-                    <div style="display:flex;gap:10px">
-                      <button class="delete-btn" onclick="editar(${e.id})" style="color:#ff0">✏️</button>
-                      <button class="delete-btn" onclick="eliminar(${e.id})" style="color:#f00">×</button>
-                    </div>
-                  </div>
-                  <div class="evento-info">🎸 ${e.grupos}</div>
-                  <div class="evento-info">📅 ${e.año}</div>
-                  ${e.lugar ? `<div class="evento-info">🏟️ ${e.lugar}</div>` : ''}
-                  ${e.ciudad ? `<div class="evento-info">📍 ${e.ciudad}</div>` : ''}
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        `;
-      }
+<div id="app"></div>
+<script>
+var eventos = JSON.parse(localStorage.getItem('eventos') || '[]');
+var page = 'home';
+var detalle = null;
+var tipoD = '';
+var editando = null;
+var form = { tipo: 'concierto', nombre: '', grupos: '', ano: '', lugar: '', ciudad: '' };
+var search = '';
+ 
+function render() {
+  var app = document.getElementById('app');
+  if (page === 'home') {
+    app.innerHTML = '<div class="header"><div class="logo">🤘</div><h1 class="title">Mis Conciertos</h1><p class="subtitle">Metal Archives</p></div><div class="container"><button class="btn" onclick="goTo(\'agregar\')"><span class="btn-text">➕ Agregar</span></button><button class="btn" onclick="goTo(\'estadisticas\')"><span class="btn-text">📊 Stats</span></button><button class="btn" onclick="goTo(\'buscar\')"><span class="btn-text">🔍 Buscar</span></button><div class="counter">' + eventos.length + ' eventos</div></div>';
+  }
+  else if (page === 'agregar') {
+    app.innerHTML = '<div class="container"><button class="back-btn" onclick="goTo(\'home\')">← Volver</button><div class="card"><h2 class="card-title">' + (editando ? 'Editar' : 'Agregar') + '</h2><label class="label">Tipo</label><div class="tipo-selector"><button class="tipo-btn ' + (form.tipo === 'concierto' ? 'active' : '') + '" onclick="setTipo(\'concierto\')">Concierto</button><button class="tipo-btn ' + (form.tipo === 'festival' ? 'active' : '') + '" onclick="setTipo(\'festival\')">Festival</button></div><label class="label">Nombre *</label><input id="inNombre" class="input" value="' + escHtml(form.nombre) + '"><label class="label">Grupos *</label><input id="inGrupos" class="input" value="' + escHtml(form.grupos) + '" placeholder="Separa con comas"><label class="label">Año</label><input id="inAno" class="input" type="number" value="' + escHtml(form.ano) + '"><label class="label">Lugar</label><input id="inLugar" class="input" value="' + escHtml(form.lugar) + '"><label class="label">Ciudad</label><input id="inCiudad" class="input" value="' + escHtml(form.ciudad) + '"><button class="submit-btn" onclick="guardar()">' + (editando ? 'Actualizar' : 'Guardar') + '</button></div></div>';
+  }
+  else if (page === 'estadisticas') {
+    if (detalle) {
+      var evs = [];
+      if (tipoD === 'artista') evs = eventos.filter(function(e) { return e.grupos.split(',').map(function(g){return g.trim();}).indexOf(detalle) >= 0; });
+      else if (tipoD === 'ciudad') evs = eventos.filter(function(e) { return e.ciudad === detalle; });
+      else if (tipoD === 'lugar') evs = eventos.filter(function(e) { return e.lugar === detalle; });
+      else if (tipoD === 'ano') evs = eventos.filter(function(e) { return String(e.ano) === detalle; });
+      var html = '<div class="container"><button class="back-btn" onclick="detalle=null;render()">← Stats</button><div class="card"><h2 class="card-title">' + escHtml(detalle) + '</h2><p style="color:#999;margin-bottom:15px">' + evs.length + ' evento' + (evs.length !== 1 ? 's' : '') + '</p>';
+      evs.forEach(function(e) {
+        html += '<div class="evento-card"><div style="display:flex;justify-content:space-between"><div><div class="evento-tipo tipo-' + e.tipo + '">' + e.tipo + '</div><h3 class="evento-nombre">' + escHtml(e.nombre) + '</h3></div><div style="display:flex;gap:10px"><button class="delete-btn" onclick="editar(' + e.id + ')" style="color:#ff0">✏️</button><button class="delete-btn" onclick="eliminar(' + e.id + ')" style="color:#f00">×</button></div></div><div class="evento-info">🎸 ' + escHtml(e.grupos) + '</div><div class="evento-info">📅 ' + escHtml(String(e.ano)) + '</div>' + (e.lugar ? '<div class="evento-info">🏟️ ' + escHtml(e.lugar) + '</div>' : '') + (e.ciudad ? '<div class="evento-info">📍 ' + escHtml(e.ciudad) + '</div>' : '') + '</div>';
+      });
+      html += '</div></div>';
+      app.innerHTML = html;
+      return;
     }
-
-    function goTo(p) { 
-      editando = null;
-      form = { tipo: 'concierto', nombre: '', grupos: '', año: ", lugar: '', ciudad: '' };
-      page = p; 
-      render(); 
+    var arts = {};
+    eventos.forEach(function(e) { e.grupos.split(',').map(function(g){return g.trim();}).filter(function(g){return g;}).forEach(function(a) { arts[a] = (arts[a]||0)+1; }); });
+    var artList = Object.keys(arts).map(function(k){return [k,arts[k]];}).sort(function(a,b){return b[1]-a[1];}).slice(0,15);
+    var cities = {};
+    eventos.forEach(function(e) { if(e.ciudad) cities[e.ciudad] = (cities[e.ciudad]||0)+1; });
+    var cityList = Object.keys(cities).map(function(k){return [k,cities[k]];}).sort(function(a,b){return b[1]-a[1];}).slice(0,10);
+    var places = {};
+    eventos.forEach(function(e) { if(e.lugar) places[e.lugar] = (places[e.lugar]||0)+1; });
+    var placeList = Object.keys(places).map(function(k){return [k,places[k]];}).sort(function(a,b){return b[1]-a[1];}).slice(0,10);
+    var years = {};
+    eventos.forEach(function(e) { if(e.ano) years[e.ano] = (years[e.ano]||0)+1; });
+    var yearList = Object.keys(years).map(function(k){return [k,years[k]];}).sort(function(a,b){return b[0]-a[0];});
+    var conc = eventos.filter(function(e){return e.tipo==='concierto';}).length;
+    var fest = eventos.filter(function(e){return e.tipo==='festival';}).length;
+    var html = '<div class="container"><button class="back-btn" onclick="goTo(\'home\')">← Volver</button><div class="card"><h2 class="card-title">Stats</h2><div class="stat-grid"><div class="stat-card stat-concierto"><div class="stat-number">' + conc + '</div><div class="stat-label">Conciertos</div></div><div class="stat-card stat-festival"><div class="stat-number">' + fest + '</div><div class="stat-label">Festivales</div></div></div>';
+    if (artList.length > 0) {
+      html += '<div class="list-section"><h3 class="list-title">🎸 Artistas</h3><div class="list-container">';
+      artList.forEach(function(item) { html += '<div class="list-item" onclick="detalle=' + JSON.stringify(item[0]) + ';tipoD=\'artista\';render()"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + 'x</span></div>'; });
+      html += '</div></div>';
     }
-    
-    function setTipo(t) { form.tipo = t; render(); }
-    
-    function editar(id) {
-      const evento = eventos.find(e => e.id === id);
-      if (evento) {
-        editando = id;
-        form = evento;
-        page = 'agregar';
-        render();
-      }
-    function updateSearch(val) {
-  search = val;
-  const pos = val.length;
-  render();
-  const inp = document.getElementById('searchInput');
-  if (inp) { inp.focus(); inp.setSelectionRange(pos, pos); }
+    if (cityList.length > 0) {
+      html += '<div class="list-section"><h3 class="list-title">📍 Ciudades</h3><div class="list-container">';
+      cityList.forEach(function(item) { html += '<div class="list-item" onclick="detalle=' + JSON.stringify(item[0]) + ';tipoD=\'ciudad\';render()"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + 'x</span></div>'; });
+      html += '</div></div>';
+    }
+    if (placeList.length > 0) {
+      html += '<div class="list-section"><h3 class="list-title">🏟️ Venues</h3><div class="list-container">';
+      placeList.forEach(function(item) { html += '<div class="list-item" onclick="detalle=' + JSON.stringify(item[0]) + ';tipoD=\'lugar\';render()"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + 'x</span></div>'; });
+      html += '</div></div>';
+    }
+    if (yearList.length > 0) {
+      html += '<div class="list-section"><h3 class="list-title">📅 Años</h3><div class="list-container">';
+      yearList.forEach(function(item) { html += '<div class="list-item" onclick="detalle=' + JSON.stringify(item[0]) + ';tipoD=\'ano\';render()"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + '</span></div>'; });
+      html += '</div></div>';
+    }
+    html += '</div></div>';
+    app.innerHTML = html;
+  }
+  else if (page === 'buscar') {
+    var s = search.toLowerCase();
+    var filt = eventos.filter(function(e) {
+      return e.nombre.toLowerCase().indexOf(s) >= 0 ||
+             e.grupos.toLowerCase().indexOf(s) >= 0 ||
+             e.ciudad.toLowerCase().indexOf(s) >= 0 ||
+             e.lugar.toLowerCase().indexOf(s) >= 0 ||
+             String(e.ano).indexOf(s) >= 0;
+    });
+    var html = '<div class="container"><button class="back-btn" onclick="goTo(\'home\')">← Volver</button><div class="card"><h2 class="card-title">Buscar</h2><input id="searchInput" class="search-input" placeholder="Buscar..." value="' + escHtml(search) + '" oninput="updateSearch(this.value)">';
+    if (filt.length === 0) {
+      html += '<p style="text-align:center;color:#666;padding:30px">' + (search ? 'Sin resultados' : 'Escribe para buscar') + '</p>';
+    } else {
+      filt.forEach(function(e) {
+        html += '<div class="evento-card"><div style="display:flex;justify-content:space-between"><div><div class="evento-tipo tipo-' + e.tipo + '">' + e.tipo + '</div><h3 class="evento-nombre">' + escHtml(e.nombre) + '</h3></div><div style="display:flex;gap:10px"><button class="delete-btn" onclick="editar(' + e.id + ')" style="color:#ff0">✏️</button><button class="delete-btn" onclick="eliminar(' + e.id + ')" style="color:#f00">×</button></div></div><div class="evento-info">🎸 ' + escHtml(e.grupos) + '</div><div class="evento-info">📅 ' + escHtml(String(e.ano)) + '</div>' + (e.lugar ? '<div class="evento-info">🏟️ ' + escHtml(e.lugar) + '</div>' : '') + (e.ciudad ? '<div class="evento-info">📍 ' + escHtml(e.ciudad) + '</div>' : '') + '</div>';
+      });
+    }
+    html += '</div></div>';
+    app.innerHTML = html;
+    var inp = document.getElementById('searchInput');
+    if (inp) { inp.focus(); inp.setSelectionRange(search.length, search.length); }
+  }
 }
-    
-    function guardar() {
-      const nombre = document.getElementById('inNombre').value;
-      const grupos = document.getElementById('inGrupos').value;
-      const año = document.getElementById('inAño').value;
-      const lugar = document.getElementById('inLugar').value;
-      const ciudad = document.getElementById('inCiudad').value;
-      
-      if (!nombre || !grupos) {
-        alert('Completa nombre y grupos');
-        return;
-      }
-      
-      const eventoData = {
-        tipo: form.tipo,
-        nombre: nombre.toUpperCase(),
-        grupos: grupos.toUpperCase(),
-        año: año,
-        lugar: lugar.toUpperCase(),
-        ciudad: ciudad.toUpperCase()
-      };
-      
-      if (editando) {
-        const index = eventos.findIndex(e => e.id === editando);
-        eventos[index] = { ...eventoData, id: editando };
-        editando = null;
-      } else {
-        eventos.push({ ...eventoData, id: Date.now() });
-      }
-      
-      localStorage.setItem('eventos', JSON.stringify(eventos));
-      form = { tipo: 'concierto', nombre: '', grupos: '', año: ", lugar: '', ciudad: '' };
-      alert('¡Guardado! 🤘');
-      goTo('home');
-    }
-    
-    function eliminar(id) {
-      if (confirm('¿Eliminar este evento?')) {
-        eventos = eventos.filter(e => e.id !== id);
-        localStorage.setItem('eventos', JSON.stringify(eventos));
-        render();
-      }
-    }
-
+ 
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+ 
+function goTo(p) {
+  editando = null;
+  form = { tipo: 'concierto', nombre: '', grupos: '', ano: '', lugar: '', ciudad: '' };
+  page = p;
+  render();
+}
+ 
+function setTipo(t) { form.tipo = t; render(); }
+ 
+function updateSearch(val) {
+  search = val;
+  render();
+}
+ 
+function editar(id) {
+  var evento = null;
+  for (var i = 0; i < eventos.length; i++) { if (eventos[i].id === id) { evento = eventos[i]; break; } }
+  if (evento) {
+    editando = id;
+    form = { tipo: evento.tipo, nombre: evento.nombre, grupos: evento.grupos, ano: evento.ano, lugar: evento.lugar, ciudad: evento.ciudad };
+    page = 'agregar';
     render();
-  </script>
-  <script>
-    // Inline Service Worker
-    const swCode = `
-      self.addEventListener('install', e => self.skipWaiting());
-      self.addEventListener('activate', e => e.waitUntil(clients.claim()));
-      self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));
-    `;
-    const blob = new Blob([swCode], {type: 'application/javascript'});
-    const swUrl = URL.createObjectURL(blob);
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register(swUrl).catch(() => {});
-    }
-
-    // Inline Manifest
-    const manifest = {
-      name: "Mis Conciertos",
-      short_name: "MisConciertos",
-      start_url: "https://conde9-cmyk.github.io/conciertos/",
-      display: "standalone",
-      background_color: "#000000",
-      theme_color: "#ff0000",
-      icons: [{src: "https://conde9-cmyk.github.io/conciertos/icon.png", sizes: "512x512", type: "image/png"}]
-    };
-    const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
-    const manifestUrl = URL.createObjectURL(manifestBlob);
-    const link = document.createElement('link');
-    link.rel = 'manifest';
-    link.href = manifestUrl;
-    document.head.appendChild(link);
-  </script>
+  }
+}
+ 
+function guardar() {
+  var nombre = document.getElementById('inNombre').value;
+  var grupos = document.getElementById('inGrupos').value;
+  var ano = document.getElementById('inAno').value;
+  var lugar = document.getElementById('inLugar').value;
+  var ciudad = document.getElementById('inCiudad').value;
+  if (!nombre || !grupos) { alert('Completa nombre y grupos'); return; }
+  var eventoData = { tipo: form.tipo, nombre: nombre.toUpperCase(), grupos: grupos.toUpperCase(), ano: ano, lugar: lugar.toUpperCase(), ciudad: ciudad.toUpperCase() };
+  if (editando) {
+    for (var i = 0; i < eventos.length; i++) { if (eventos[i].id === editando) { eventos[i] = Object.assign({id: editando}, eventoData); break; } }
+    editando = null;
+  } else {
+    eventoData.id = Date.now();
+    eventos.push(eventoData);
+  }
+  localStorage.setItem('eventos', JSON.stringify(eventos));
+  form = { tipo: 'concierto', nombre: '', grupos: '', ano: '', lugar: '', ciudad: '' };
+  alert('Guardado! 🤘');
+  goTo('home');
+}
+ 
+function eliminar(id) {
+  if (confirm('Eliminar este evento?')) {
+    eventos = eventos.filter(function(e) { return e.id !== id; });
+    localStorage.setItem('eventos', JSON.stringify(eventos));
+    render();
+  }
+}
+ 
+render();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  var swCode = "self.addEventListener('install',function(e){self.skipWaiting()});self.addEventListener('activate',function(e){e.waitUntil(clients.claim())});self.addEventListener('fetch',function(e){e.respondWith(fetch(e.request).catch(function(){return caches.match(e.request)}))});";
+  var blob = new Blob([swCode], {type: 'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
+}
+</script>
 </body>
 </html>
+ 
+
