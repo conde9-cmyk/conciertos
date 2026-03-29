@@ -264,7 +264,7 @@
             <button class="back-btn" onclick="goTo('home')">← Volver</button>
             <div class="card">
               <h2 class="card-title">Buscar</h2>
-              <input class="search-input" placeholder="Buscar..." value="${search}" oninput="search=this.value;render()">
+              <input id="searchInput" class="search-input" placeholder="Buscar..." value="${search}" oninput="updateSearch(this.value)">
               ${filt.length === 0 ? `
                 <p style="text-align:center;color:#666;padding:30px">${search ? 'Sin resultados' : 'Escribe para buscar'}</p>
               ` : filt.map(e => `
@@ -293,7 +293,7 @@
 
     function goTo(p) { 
       editando = null;
-      form = { tipo: 'concierto', nombre: '', grupos: '', año: 2025, lugar: '', ciudad: '' };
+      form = { tipo: 'concierto', nombre: '', grupos: '', año: ", lugar: '', ciudad: '' };
       page = p; 
       render(); 
     }
@@ -308,7 +308,13 @@
         page = 'agregar';
         render();
       }
-    }
+    }function updateSearch(val) {
+  search = val;
+  const pos = val.length;
+  render();
+  const inp = document.getElementById('searchInput');
+  if (inp) { inp.focus(); inp.setSelectionRange(pos, pos); }
+}
     
     function guardar() {
       const nombre = document.getElementById('inNombre').value;
@@ -340,7 +346,7 @@
       }
       
       localStorage.setItem('eventos', JSON.stringify(eventos));
-      form = { tipo: 'concierto', nombre: '', grupos: '', año: 2025, lugar: '', ciudad: '' };
+      form = { tipo: 'concierto', nombre: '', grupos: '', año: ", lugar: '', ciudad: '' };
       alert('¡Guardado! 🤘');
       goTo('home');
     }
