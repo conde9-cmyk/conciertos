@@ -80,10 +80,10 @@ function render() {
       if (tipoD === 'artista') evs = eventos.filter(function(e) { return e.grupos.split(',').map(function(g){return g.trim();}).indexOf(detalle) >= 0; });
       else if (tipoD === 'ciudad') evs = eventos.filter(function(e) { return e.ciudad === detalle; });
       else if (tipoD === 'lugar') evs = eventos.filter(function(e) { return e.lugar === detalle; });
-      else if (tipoD === 'ano') evs = eventos.filter(function(e) { return String(e.ano) === detalle; });
+      else if (tipoD === 'ano') evs = eventos.filter(function(e) { return String(getAno(e)) === detalle; });
       var html = '<div class="container"><button class="back-btn" onclick="detalle=null;render()">← Stats</button><div class="card"><h2 class="card-title">' + escHtml(detalle) + '</h2><p style="color:#999;margin-bottom:15px">' + evs.length + ' evento' + (evs.length !== 1 ? 's' : '') + '</p>';
       evs.forEach(function(e) {
-        html += '<div class="evento-card"><div style="display:flex;justify-content:space-between"><div><div class="evento-tipo tipo-' + e.tipo + '">' + e.tipo + '</div><h3 class="evento-nombre">' + escHtml(e.nombre) + '</h3></div><div style="display:flex;gap:10px"><button class="delete-btn" onclick="editar(' + e.id + ')" style="color:#ff0">✏️</button><button class="delete-btn" onclick="eliminar(' + e.id + ')" style="color:#f00">×</button></div></div><div class="evento-info">🎸 ' + escHtml(e.grupos) + '</div><div class="evento-info">📅 ' + escHtml(String(e.ano)) + '</div>' + (e.lugar ? '<div class="evento-info">🏟️ ' + escHtml(e.lugar) + '</div>' : '') + (e.ciudad ? '<div class="evento-info">📍 ' + escHtml(e.ciudad) + '</div>' : '') + '</div>';
+        html += '<div class="evento-card"><div style="display:flex;justify-content:space-between"><div><div class="evento-tipo tipo-' + e.tipo + '">' + e.tipo + '</div><h3 class="evento-nombre">' + escHtml(e.nombre) + '</h3></div><div style="display:flex;gap:10px"><button class="delete-btn" onclick="editar(' + e.id + ')" style="color:#ff0">✏️</button><button class="delete-btn" onclick="eliminar(' + e.id + ')" style="color:#f00">×</button></div></div><div class="evento-info">🎸 ' + escHtml(e.grupos) + '</div><div class="evento-info">📅 ' + escHtml(String(getAno(e))) + '</div>' + (e.lugar ? '<div class="evento-info">🏟️ ' + escHtml(e.lugar) + '</div>' : '') + (e.ciudad ? '<div class="evento-info">📍 ' + escHtml(e.ciudad) + '</div>' : '') + '</div>';
       });
       html += '</div></div>';
       app.innerHTML = html;
@@ -99,7 +99,7 @@ function render() {
     eventos.forEach(function(e) { if(e.lugar) places[e.lugar] = (places[e.lugar]||0)+1; });
     var placeList = Object.keys(places).map(function(k){return [k,places[k]];}).sort(function(a,b){return b[1]-a[1];}).slice(0,10);
     var years = {};
-    eventos.forEach(function(e) { if(e.ano) years[e.ano] = (years[e.ano]||0)+1; });
+    eventos.forEach(function(e) { if(getAno(e)) years[getAno(e)] = (years[e.ano]||0)+1; });
     var yearList = Object.keys(years).map(function(k){return [k,years[k]];}).sort(function(a,b){return b[0]-a[0];});
     var conc = eventos.filter(function(e){return e.tipo==='concierto';}).length;
     var fest = eventos.filter(function(e){return e.tipo==='festival';}).length;
@@ -134,14 +134,14 @@ function render() {
              e.grupos.toLowerCase().indexOf(s) >= 0 ||
              e.ciudad.toLowerCase().indexOf(s) >= 0 ||
              e.lugar.toLowerCase().indexOf(s) >= 0 ||
-             String(e.ano).indexOf(s) >= 0;
+             String(getAno(e)).indexOf(s) >= 0;
     });
     var html = '<div class="container"><button class="back-btn" onclick="goTo(\'home\')">← Volver</button><div class="card"><h2 class="card-title">Buscar</h2><input id="searchInput" class="search-input" placeholder="Buscar..." value="' + escHtml(search) + '" oninput="updateSearch(this.value)">';
     if (filt.length === 0) {
       html += '<p style="text-align:center;color:#666;padding:30px">' + (search ? 'Sin resultados' : 'Escribe para buscar') + '</p>';
     } else {
       filt.forEach(function(e) {
-        html += '<div class="evento-card"><div style="display:flex;justify-content:space-between"><div><div class="evento-tipo tipo-' + e.tipo + '">' + e.tipo + '</div><h3 class="evento-nombre">' + escHtml(e.nombre) + '</h3></div><div style="display:flex;gap:10px"><button class="delete-btn" onclick="editar(' + e.id + ')" style="color:#ff0">✏️</button><button class="delete-btn" onclick="eliminar(' + e.id + ')" style="color:#f00">×</button></div></div><div class="evento-info">🎸 ' + escHtml(e.grupos) + '</div><div class="evento-info">📅 ' + escHtml(String(e.ano)) + '</div>' + (e.lugar ? '<div class="evento-info">🏟️ ' + escHtml(e.lugar) + '</div>' : '') + (e.ciudad ? '<div class="evento-info">📍 ' + escHtml(e.ciudad) + '</div>' : '') + '</div>';
+        html += '<div class="evento-card"><div style="display:flex;justify-content:space-between"><div><div class="evento-tipo tipo-' + e.tipo + '">' + e.tipo + '</div><h3 class="evento-nombre">' + escHtml(e.nombre) + '</h3></div><div style="display:flex;gap:10px"><button class="delete-btn" onclick="editar(' + e.id + ')" style="color:#ff0">✏️</button><button class="delete-btn" onclick="eliminar(' + e.id + ')" style="color:#f00">×</button></div></div><div class="evento-info">🎸 ' + escHtml(e.grupos) + '</div><div class="evento-info">📅 ' + escHtml(String(getAno(e))) + '</div>' + (e.lugar ? '<div class="evento-info">🏟️ ' + escHtml(e.lugar) + '</div>' : '') + (e.ciudad ? '<div class="evento-info">📍 ' + escHtml(e.ciudad) + '</div>' : '') + '</div>';
       });
     }
     html += '</div></div>';
@@ -151,7 +151,7 @@ function render() {
   }
 }
 
-function escHtml(str) {
+function getAno(e) { return e.ano !== undefined ? e.ano : e.año; }
   if (!str) return '';
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
