@@ -27,11 +27,12 @@ body { font-family: 'Arial Black', Arial, sans-serif; background: #000; color: #
 .label { display: block; color: #f00; margin-bottom: 4px; font-size: 12px; text-transform: uppercase; font-weight: 900; }
 .input { width: 100%; padding: 10px; background: #000; border: 1px solid #f00; border-radius: 8px; color: #fff; font-size: 15px; margin-bottom: 10px; }
 .tipo-selector { display: flex; gap: 10px; margin-bottom: 10px; }
-.tipo-btn { flex: 1; padding: 10px; background: #000; border: 1px solid #f00; border-radius: 8px; color: #f00; font-weight: 900; cursor: pointer; font-size: 15px; }
-.tipo-btn.active { background: #f00; color: #000; }
+.tipo-btn { flex: 1; padding: 10px; background: #000; border: 2px solid #f00; border-radius: 8px; color: #f00; font-weight: 900; cursor: pointer; font-size: 15px; }
+.tipo-btn.active-concierto { background: #f00; color: #000; border-color: #f00; }
+.tipo-btn.active-festival { background: #ffd700; color: #000; border-color: #ffd700; }
 .submit-btn { width: 100%; padding: 13px; background: #f00; color: #000; border: none; border-radius: 8px; font-size: 17px; font-weight: 900; cursor: pointer; }
 .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
-.stat-card { padding: 15px; border-radius: 12px; border: 2px solid; }
+.stat-card { padding: 15px; border-radius: 12px; border: 2px solid; cursor: pointer; }
 .stat-concierto { background: linear-gradient(145deg, #ff0000, #8b0000); border-color: #ff0000; }
 .stat-festival { background: linear-gradient(145deg, #ffd700, #cc9900); border-color: #ffd700; }
 .stat-number { font-size: 42px; font-weight: 900; margin-bottom: 5px; }
@@ -50,7 +51,10 @@ body { font-family: 'Arial Black', Arial, sans-serif; background: #000; color: #
 .tipo-festival { background: #ffd700; color: #000; }
 .evento-nombre { color: #f00; font-size: 22px; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; }
 .evento-info { color: #999; font-size: 16px; margin-bottom: 4px; }
-.search-input { width: 100%; padding: 18px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #fff; font-size: 18px; margin-bottom: 20px; }
+.search-input { width: 100%; padding: 15px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #fff; font-size: 16px; margin-bottom: 12px; }
+.filter-bar { display: flex; gap: 8px; margin-bottom: 15px; }
+.filter-btn { flex: 1; padding: 10px; background: #000; border: 2px solid #f00; border-radius: 8px; color: #f00; font-weight: 900; cursor: pointer; font-size: 13px; }
+.filter-btn.active { background: #f00; color: #000; }
 .counter { text-align: center; color: #666; font-size: 16px; margin-top: 20px; }
 .delete-btn { background: none; border: none; cursor: pointer; padding: 5px; font-size: 24px; }
 </style>
@@ -65,15 +69,58 @@ var tipoD = '';
 var editando = null;
 var form = { tipo: 'concierto', nombre: '', grupos: '', ano: '', lugar: '', ciudad: '' };
 var search = '';
+var filtroTipo = 'todos';
+
+function getAno(e) {
+  if (e.ano !== undefined && e.ano !== null) return e.ano;
+  var keys = Object.keys(e);
+  for (var i = 0; i < keys.length; i++) {
+    var k = keys[i];
+    if (k !== 'ano' && k.charAt(0) === 'a' && k.charAt(k.length-1) === 'o' && k.length <= 4) return e[k];
+  }
+  return '';
+}
+
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function getSugs(campo) {
+  var vals = {};
+  eventos.forEach(function(e) { var v = e[campo] || ''; if (v) vals[v] = 1; });
+  return Object.keys(vals);
+}
 
 function render() {
   var app = document.getElementById('app');
+
   if (page === 'home') {
-    app.innerHTML = '<div class="header"><div class="logo">🤘</div><h1 class="title">Mis Conciertos</h1><p class="subtitle">Metal Archives</p></div><div class="container"><button class="btn" onclick="goTo(\'agregar\')"><span class="btn-text">➕ Agregar</span></button><button class="btn" onclick="goTo(\'estadisticas\')"><span class="btn-text">📊 Stats</span></button><button class="btn" onclick="goTo(\'buscar\')"><span class="btn-text">🔍 Buscar</span></button><div class="counter">' + eventos.length + ' eventos</div></div>';
+    app.innerHTML = '<div class="header"><div class="logo">🤘</div><h1 class="title">Mis Conciertos</h1><p class="subtitle">Metal Archives</p></div><div class="container"><button class="btn" onclick="goTo(\'agregar\')"><span class="btn-text">➕ Agregar</span></button><button class="btn" onclick="goTo(\'estadisticas\')"><span class="btn-text">📊 Estadísticas</span></button><button class="btn" onclick="goTo(\'buscar\')"><span class="btn-text">🔍 Buscar</span></button><div class="counter">' + eventos.length + ' eventos</div></div>';
   }
+
   else if (page === 'agregar') {
-    app.innerHTML = '<div class="container"><button class="back-btn" onclick="goTo(\'home\')">← Volver</button><div class="card"><h2 class="card-title">' + (editando ? 'Editar' : 'Agregar') + '</h2><label class="label">Tipo</label><div class="tipo-selector"><button class="tipo-btn ' + (form.tipo === 'concierto' ? 'active' : '') + '" onclick="setTipo(\'concierto\')">Concierto</button><button class="tipo-btn ' + (form.tipo === 'festival' ? 'active' : '') + '" onclick="setTipo(\'festival\')">Festival</button></div><label class="label">Nombre *</label><input id="inNombre" class="input" value="' + escHtml(form.nombre) + '"><label class="label">Grupos *</label><input id="inGrupos" class="input" value="' + escHtml(form.grupos) + '" placeholder="Separa con comas"><label class="label">Año</label><input id="inAno" class="input" type="number" value="' + escHtml(form.ano) + '"><label class="label">Lugar</label><input id="inLugar" class="input" value="' + escHtml(form.lugar) + '"><label class="label">Ciudad</label><input id="inCiudad" class="input" value="' + escHtml(form.ciudad) + '"><button class="submit-btn" onclick="guardar()">' + (editando ? 'Actualizar' : 'Guardar') + '</button></div></div>';
+    var ciudades = getSugs('ciudad');
+    var lugares = getSugs('lugar');
+    var claseConc = form.tipo === 'concierto' ? 'active-concierto' : '';
+    var claseFest = form.tipo === 'festival' ? 'active-festival' : '';
+    var html = '<div class="container"><button class="back-btn" onclick="goTo(\'home\')">← Volver</button><div class="card">';
+    html += '<h2 class="card-title">' + (editando ? 'Editar' : 'Agregar') + '</h2>';
+    html += '<label class="label">Tipo</label>';
+    html += '<div class="tipo-selector"><button class="tipo-btn ' + claseConc + '" onclick="setTipo(\'concierto\')">Concierto</button><button class="tipo-btn ' + claseFest + '" onclick="setTipo(\'festival\')">Festival</button></div>';
+    html += '<label class="label">Nombre *</label><input id="inNombre" class="input" value="' + escHtml(form.nombre) + '">';
+    html += '<label class="label">Grupos</label><input id="inGrupos" class="input" value="' + escHtml(form.grupos) + '" placeholder="Separa con comas">';
+    html += '<label class="label">Año</label><input id="inAno" class="input" type="number" value="' + escHtml(form.ano) + '">';
+    html += '<label class="label">Lugar</label><input id="inLugar" class="input" value="' + escHtml(form.lugar) + '" list="listLugares"><datalist id="listLugares">';
+    lugares.forEach(function(l) { html += '<option value="' + escHtml(l) + '">'; });
+    html += '</datalist>';
+    html += '<label class="label">Ciudad</label><input id="inCiudad" class="input" value="' + escHtml(form.ciudad) + '" list="listCiudades"><datalist id="listCiudades">';
+    ciudades.forEach(function(c) { html += '<option value="' + escHtml(c) + '">'; });
+    html += '</datalist>';
+    html += '<button class="submit-btn" onclick="guardar()">' + (editando ? 'Actualizar' : 'Guardar') + '</button></div></div>';
+    app.innerHTML = html;
   }
+
   else if (page === 'estadisticas') {
     if (detalle) {
       var evs = [];
@@ -81,67 +128,86 @@ function render() {
       else if (tipoD === 'ciudad') evs = eventos.filter(function(e) { return e.ciudad === detalle; });
       else if (tipoD === 'lugar') evs = eventos.filter(function(e) { return e.lugar === detalle; });
       else if (tipoD === 'ano') evs = eventos.filter(function(e) { return String(getAno(e)) === detalle; });
-      var html = '<div class="container"><button class="back-btn" onclick="detalle=null;render()">← Stats</button><div class="card"><h2 class="card-title">' + escHtml(detalle) + '</h2><p style="color:#999;margin-bottom:15px">' + evs.length + ' evento' + (evs.length !== 1 ? 's' : '') + '</p>';
-      evs.forEach(function(e) {
-        html += '<div class="evento-card"><div style="display:flex;justify-content:space-between"><div><div class="evento-tipo tipo-' + e.tipo + '">' + e.tipo + '</div><h3 class="evento-nombre">' + escHtml(e.nombre) + '</h3></div><div style="display:flex;gap:10px"><button class="delete-btn" onclick="editar(' + e.id + ')" style="color:#ff0">✏️</button><button class="delete-btn" onclick="eliminar(' + e.id + ')" style="color:#f00">×</button></div></div><div class="evento-info">🎸 ' + escHtml(e.grupos) + '</div><div class="evento-info">📅 ' + escHtml(String(getAno(e))) + '</div>' + (e.lugar ? '<div class="evento-info">🏟️ ' + escHtml(e.lugar) + '</div>' : '') + (e.ciudad ? '<div class="evento-info">📍 ' + escHtml(e.ciudad) + '</div>' : '') + '</div>';
+      else if (tipoD === 'tipo') evs = eventos.filter(function(e) { return e.tipo === detalle; });
+      var html = '<div class="container"><button class="back-btn" onclick="detalle=null;render()">← Estadísticas</button><div class="card"><h2 class="card-title">' + escHtml(detalle) + '</h2><p style="color:#999;margin-bottom:15px">' + evs.length + ' evento' + (evs.length !== 1 ? 's' : '') + '</p>';
+      window._curEvs = evs;
+      evs.forEach(function(e, idx) {
+        html += '<div class="evento-card"><div style="display:flex;justify-content:space-between"><div><div class="evento-tipo tipo-' + e.tipo + '">' + e.tipo + '</div><h3 class="evento-nombre">' + escHtml(e.nombre) + '</h3></div><div style="display:flex;gap:10px"><button class="delete-btn" onclick="accion(' + idx + ',0)" style="color:#ff0">✏️</button><button class="delete-btn" onclick="accion(' + idx + ',1)" style="color:#f00">×</button></div></div><div class="evento-info">🎸 ' + escHtml(e.grupos) + '</div><div class="evento-info">📅 ' + escHtml(String(getAno(e))) + '</div>' + (e.lugar ? '<div class="evento-info">🏟️ ' + escHtml(e.lugar) + '</div>' : '') + (e.ciudad ? '<div class="evento-info">📍 ' + escHtml(e.ciudad) + '</div>' : '') + '</div>';
       });
       html += '</div></div>';
       app.innerHTML = html;
       return;
     }
+
     var arts = {};
     eventos.forEach(function(e) { e.grupos.split(',').map(function(g){return g.trim();}).filter(function(g){return g;}).forEach(function(a) { arts[a] = (arts[a]||0)+1; }); });
-    var artList = Object.keys(arts).map(function(k){return [k,arts[k]];}).sort(function(a,b){return b[1]-a[1];}).slice(0,15);
+    var artList = Object.keys(arts).map(function(k){return [k,arts[k]];}).sort(function(a,b){return a[0].localeCompare(b[0]);}).slice(0,50);
     var cities = {};
     eventos.forEach(function(e) { if(e.ciudad) cities[e.ciudad] = (cities[e.ciudad]||0)+1; });
-    var cityList = Object.keys(cities).map(function(k){return [k,cities[k]];}).sort(function(a,b){return b[1]-a[1];}).slice(0,10);
+    var cityList = Object.keys(cities).map(function(k){return [k,cities[k]];}).sort(function(a,b){return a[0].localeCompare(b[0]);});
     var places = {};
     eventos.forEach(function(e) { if(e.lugar) places[e.lugar] = (places[e.lugar]||0)+1; });
-    var placeList = Object.keys(places).map(function(k){return [k,places[k]];}).sort(function(a,b){return b[1]-a[1];}).slice(0,10);
+    var placeList = Object.keys(places).map(function(k){return [k,places[k]];}).sort(function(a,b){return a[0].localeCompare(b[0]);});
     var years = {};
-    eventos.forEach(function(e) { if(getAno(e)) years[getAno(e)] = (years[e.ano]||0)+1; });
+    eventos.forEach(function(e) { var y = getAno(e); if(y) years[y] = (years[y]||0)+1; });
     var yearList = Object.keys(years).map(function(k){return [k,years[k]];}).sort(function(a,b){return b[0]-a[0];});
     var conc = eventos.filter(function(e){return e.tipo==='concierto';}).length;
     var fest = eventos.filter(function(e){return e.tipo==='festival';}).length;
-    var html = '<div class="container"><button class="back-btn" onclick="goTo(\'home\')">← Volver</button><div class="card"><h2 class="card-title">Stats</h2><div class="stat-grid"><div class="stat-card stat-concierto"><div class="stat-number">' + conc + '</div><div class="stat-label">Conciertos</div></div><div class="stat-card stat-festival"><div class="stat-number">' + fest + '</div><div class="stat-label">Festivales</div></div></div>';
+
+    var html = '<div class="container"><button class="back-btn" onclick="goTo(\'home\')">← Volver</button><div class="card"><h2 class="card-title">Estadísticas</h2>';
+    html += '<div class="stat-grid">';
+    html += '<div class="stat-card stat-concierto" onclick="detalle=\'concierto\';tipoD=\'tipo\';render()"><div class="stat-number">' + conc + '</div><div class="stat-label">Conciertos</div></div>';
+    html += '<div class="stat-card stat-festival" onclick="detalle=\'festival\';tipoD=\'tipo\';render()"><div class="stat-number">' + fest + '</div><div class="stat-label">Festivales</div></div>';
+    html += '</div>';
+
+    window._listas = { artistas: artList, ciudades: cityList, lugares: placeList, anos: yearList };
     if (artList.length > 0) {
       html += '<div class="list-section"><h3 class="list-title">🎸 Artistas</h3><div class="list-container">';
-      artList.forEach(function(item) { html += '<div class="list-item" onclick="detalle=' + JSON.stringify(item[0]) + ';tipoD=\'artista\';render()"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + 'x</span></div>'; });
+      artList.forEach(function(item, i) { html += '<div class="list-item" onclick="selLista(\'artistas\',' + i + ',\'artista\')"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + 'x</span></div>'; });
       html += '</div></div>';
     }
     if (cityList.length > 0) {
       html += '<div class="list-section"><h3 class="list-title">📍 Ciudades</h3><div class="list-container">';
-      cityList.forEach(function(item) { html += '<div class="list-item" onclick="detalle=' + JSON.stringify(item[0]) + ';tipoD=\'ciudad\';render()"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + 'x</span></div>'; });
+      cityList.forEach(function(item, i) { html += '<div class="list-item" onclick="selLista(\'ciudades\',' + i + ',\'ciudad\')"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + 'x</span></div>'; });
       html += '</div></div>';
     }
     if (placeList.length > 0) {
       html += '<div class="list-section"><h3 class="list-title">🏟️ Venues</h3><div class="list-container">';
-      placeList.forEach(function(item) { html += '<div class="list-item" onclick="detalle=' + JSON.stringify(item[0]) + ';tipoD=\'lugar\';render()"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + 'x</span></div>'; });
+      placeList.forEach(function(item, i) { html += '<div class="list-item" onclick="selLista(\'lugares\',' + i + ',\'lugar\')"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + 'x</span></div>'; });
       html += '</div></div>';
     }
     if (yearList.length > 0) {
       html += '<div class="list-section"><h3 class="list-title">📅 Años</h3><div class="list-container">';
-      yearList.forEach(function(item) { html += '<div class="list-item" onclick="detalle=' + JSON.stringify(item[0]) + ';tipoD=\'ano\';render()"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + '</span></div>'; });
+      yearList.forEach(function(item, i) { html += '<div class="list-item" onclick="selLista(\'anos\',' + i + ',\'ano\')"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + '</span></div>'; });
       html += '</div></div>';
     }
     html += '</div></div>';
     app.innerHTML = html;
   }
+
   else if (page === 'buscar') {
     var s = search.toLowerCase();
     var filt = eventos.filter(function(e) {
+      if (filtroTipo !== 'todos' && e.tipo !== filtroTipo) return false;
+      if (!s) return true;
       return e.nombre.toLowerCase().indexOf(s) >= 0 ||
              e.grupos.toLowerCase().indexOf(s) >= 0 ||
-             e.ciudad.toLowerCase().indexOf(s) >= 0 ||
-             e.lugar.toLowerCase().indexOf(s) >= 0 ||
+             (e.ciudad||'').toLowerCase().indexOf(s) >= 0 ||
+             (e.lugar||'').toLowerCase().indexOf(s) >= 0 ||
              String(getAno(e)).indexOf(s) >= 0;
     });
-    var html = '<div class="container"><button class="back-btn" onclick="goTo(\'home\')">← Volver</button><div class="card"><h2 class="card-title">Buscar</h2><input id="searchInput" class="search-input" placeholder="Buscar..." value="' + escHtml(search) + '" oninput="updateSearch(this.value)">';
+    var btnTodos = filtroTipo === 'todos' ? 'active' : '';
+    var btnConc = filtroTipo === 'concierto' ? 'active' : '';
+    var btnFest = filtroTipo === 'festival' ? 'active' : '';
+    var html = '<div class="container"><button class="back-btn" onclick="goTo(\'home\')">← Volver</button><div class="card"><h2 class="card-title">Buscar</h2>';
+    html += '<input id="searchInput" class="search-input" placeholder="Buscar..." value="' + escHtml(search) + '" oninput="updateSearch(this.value)">';
+    html += '<div class="filter-bar"><button class="filter-btn ' + btnTodos + '" onclick="filtroTipo=\'todos\';render()">Todos</button><button class="filter-btn ' + btnConc + '" onclick="filtroTipo=\'concierto\';render()">Conciertos</button><button class="filter-btn ' + btnFest + '" onclick="filtroTipo=\'festival\';render()">Festivales</button></div>';
     if (filt.length === 0) {
-      html += '<p style="text-align:center;color:#666;padding:30px">' + (search ? 'Sin resultados' : 'Escribe para buscar') + '</p>';
+      html += '<p style="text-align:center;color:#666;padding:30px">' + (search || filtroTipo !== 'todos' ? 'Sin resultados' : 'Escribe para buscar') + '</p>';
     } else {
-      filt.forEach(function(e) {
-        html += '<div class="evento-card"><div style="display:flex;justify-content:space-between"><div><div class="evento-tipo tipo-' + e.tipo + '">' + e.tipo + '</div><h3 class="evento-nombre">' + escHtml(e.nombre) + '</h3></div><div style="display:flex;gap:10px"><button class="delete-btn" onclick="editar(' + e.id + ')" style="color:#ff0">✏️</button><button class="delete-btn" onclick="eliminar(' + e.id + ')" style="color:#f00">×</button></div></div><div class="evento-info">🎸 ' + escHtml(e.grupos) + '</div><div class="evento-info">📅 ' + escHtml(String(getAno(e))) + '</div>' + (e.lugar ? '<div class="evento-info">🏟️ ' + escHtml(e.lugar) + '</div>' : '') + (e.ciudad ? '<div class="evento-info">📍 ' + escHtml(e.ciudad) + '</div>' : '') + '</div>';
+      window._curEvs = filt;
+      filt.forEach(function(e, idx) {
+        html += '<div class="evento-card"><div style="display:flex;justify-content:space-between"><div><div class="evento-tipo tipo-' + e.tipo + '">' + e.tipo + '</div><h3 class="evento-nombre">' + escHtml(e.nombre) + '</h3></div><div style="display:flex;gap:10px"><button class="delete-btn" onclick="accion(' + idx + ',0)" style="color:#ff0">✏️</button><button class="delete-btn" onclick="accion(' + idx + ',1)" style="color:#f00">×</button></div></div><div class="evento-info">🎸 ' + escHtml(e.grupos) + '</div><div class="evento-info">📅 ' + escHtml(String(getAno(e))) + '</div>' + (e.lugar ? '<div class="evento-info">🏟️ ' + escHtml(e.lugar) + '</div>' : '') + (e.ciudad ? '<div class="evento-info">📍 ' + escHtml(e.ciudad) + '</div>' : '') + '</div>';
       });
     }
     html += '</div></div>';
@@ -151,11 +217,18 @@ function render() {
   }
 }
 
-function getAno(e) { return e.ano !== undefined ? e.ano : (e["a\u00f1o"] || ""); }
+function selLista(lista, idx, tipo) {
+  detalle = window._listas[lista][idx][0];
+  tipoD = tipo;
+  render();
+}
 
-function escHtml(str) {
-  if (!str) return '';
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function accion(idx, tipo) {
+  var arr = window._curEvs || [];
+  var ev = arr[idx];
+  if (!ev) return;
+  if (tipo === 0) editar(ev.id);
+  else eliminar(ev.id);
 }
 
 function goTo(p) {
@@ -167,17 +240,14 @@ function goTo(p) {
 
 function setTipo(t) { form.tipo = t; render(); }
 
-function updateSearch(val) {
-  search = val;
-  render();
-}
+function updateSearch(val) { search = val; render(); }
 
 function editar(id) {
   var evento = null;
   for (var i = 0; i < eventos.length; i++) { if (eventos[i].id === id) { evento = eventos[i]; break; } }
   if (evento) {
     editando = id;
-    form = { tipo: evento.tipo, nombre: evento.nombre, grupos: evento.grupos, ano: evento.ano, lugar: evento.lugar, ciudad: evento.ciudad };
+    form = { tipo: evento.tipo, nombre: evento.nombre, grupos: evento.grupos, ano: getAno(evento), lugar: evento.lugar, ciudad: evento.ciudad };
     page = 'agregar';
     render();
   }
@@ -189,7 +259,7 @@ function guardar() {
   var ano = document.getElementById('inAno').value;
   var lugar = document.getElementById('inLugar').value;
   var ciudad = document.getElementById('inCiudad').value;
-  if (!nombre || !grupos) { alert('Completa nombre y grupos'); return; }
+  if (!nombre) { alert('Completa el nombre'); return; }
   var eventoData = { tipo: form.tipo, nombre: nombre.toUpperCase(), grupos: grupos.toUpperCase(), ano: ano, lugar: lugar.toUpperCase(), ciudad: ciudad.toUpperCase() };
   if (editando) {
     for (var i = 0; i < eventos.length; i++) { if (eventos[i].id === editando) { eventos[i] = Object.assign({id: editando}, eventoData); break; } }
@@ -216,9 +286,9 @@ render();
 </script>
 <script>
 if ('serviceWorker' in navigator) {
-  var swCode = "self.addEventListener('install',function(e){self.skipWaiting()});self.addEventListener('activate',function(e){e.waitUntil(clients.claim())});self.addEventListener('fetch',function(e){e.respondWith(fetch(e.request).catch(function(){return caches.match(e.request)}))});";
-  var blob = new Blob([swCode], {type: 'application/javascript'});
-  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
+  navigator.serviceWorker.getRegistrations().then(function(regs) {
+    regs.forEach(function(reg) { reg.unregister(); });
+  });
 }
 </script>
 </body>
