@@ -76,6 +76,8 @@ var editando = null;
 var form = { tipo: 'concierto', nombre: '', grupos: '', ano: '', lugar: '', ciudad: '', precio: '' };
 var search = '';
 var filtroTipo = 'todos';
+var searchArtista = '';
+var sortOrden = { artistas: 'az', ciudades: 'az', lugares: 'az', anos: 'az' };
 
 function getAno(e) {
   if (e.ano !== undefined && e.ano !== null) return e.ano;
@@ -158,20 +160,37 @@ function render() {
 
     var arts = {};
     eventos.forEach(function(e) { (e.grupos||'').split(',').map(function(g){return g.trim();}).filter(function(g){return g;}).forEach(function(a) { arts[a] = (arts[a]||0)+1; }); });
-    var artList = Object.keys(arts).map(function(k){return [k,arts[k]];}).sort(function(a,b){return a[0].localeCompare(b[0]);});
+    var artListBase = Object.keys(arts).map(function(k){return [k,arts[k]];});
     var cities = {};
     eventos.forEach(function(e) { if(e.ciudad) cities[e.ciudad] = (cities[e.ciudad]||0)+1; });
-    var cityList = Object.keys(cities).map(function(k){return [k,cities[k]];}).sort(function(a,b){return a[0].localeCompare(b[0]);});
+    var cityListBase = Object.keys(cities).map(function(k){return [k,cities[k]];});
     var places = {};
     eventos.forEach(function(e) { if(e.lugar) places[e.lugar] = (places[e.lugar]||0)+1; });
-    var placeList = Object.keys(places).map(function(k){return [k,places[k]];}).sort(function(a,b){return a[0].localeCompare(b[0]);});
+    var placeListBase = Object.keys(places).map(function(k){return [k,places[k]];});
     var years = {};
     eventos.forEach(function(e) { var y = getAno(e); if(y) years[y] = (years[y]||0)+1; });
-    var yearList = Object.keys(years).map(function(k){return [k,years[k]];}).sort(function(a,b){return b[0]-a[0];});
+    var yearListBase = Object.keys(years).map(function(k){return [k,years[k]];});
+
+    function sortList(list, key) {
+      var l = list.slice();
+      if (sortOrden[key] === 'az') return l.sort(function(a,b){return a[0].localeCompare(b[0]);});
+      return l.sort(function(a,b){return b[1]-a[1];});
+    }
+    function sortBtn(key) {
+      var isAz = sortOrden[key] === 'az';
+      return '<button onclick="sortOrden[\'' + key + '\']=\'' + (isAz?'num':'az') + '\';render()" style="background:#000;border:1px solid #f00;color:#f00;border-radius:6px;padding:4px 10px;font-size:14px;font-weight:900;cursor:pointer;float:right">' + (isAz ? '1→9' : 'A-Z') + '</button>';
+    }
+
+    var artList = sortList(artListBase, 'artistas');
+    var cityList = sortList(cityListBase, 'ciudades');
+    var placeList = sortList(placeListBase, 'lugares');
+    var yearList = sortList(yearListBase, 'anos');
+
     var conc = eventos.filter(function(e){return e.tipo==='concierto';}).length;
     var fest = eventos.filter(function(e){return e.tipo==='festival';}).length;
     var totalGasto = 0;
     eventos.forEach(function(e) { if (e.precio) totalGasto += parseFloat(e.precio) || 0; });
+    var totalArts = artListBase.length;
 
     window._listas = { artistas: artList, ciudades: cityList, lugares: placeList, anos: yearList };
 
@@ -179,26 +198,27 @@ function render() {
     html += '<div class="stat-grid">';
     html += '<div class="stat-card stat-concierto" onclick="detalle=\'concierto\';tipoD=\'tipo\';render()"><div class="stat-number">' + conc + '</div><div class="stat-label">Conciertos</div></div>';
     html += '<div class="stat-card stat-festival" onclick="detalle=\'festival\';tipoD=\'tipo\';render()"><div class="stat-number">' + fest + '</div><div class="stat-label">Festivales</div></div>';
+    html += '<div class="stat-card" style="background:linear-gradient(145deg,#880088,#440044);border-color:#ff00ff;grid-column:1/-1"><div class="stat-number" style="color:#fff">' + totalArts + '</div><div class="stat-label" style="color:#fff">🎸 Artistas únicos</div></div>';
     if (totalGasto > 0) html += '<div class="stat-card stat-dinero"><div class="stat-number">' + totalGasto.toFixed(2) + ' €</div><div class="stat-label">💶 Total gastado</div></div>';
     html += '</div>';
 
     if (artList.length > 0) {
-      html += '<div class="list-section"><h3 class="list-title">🎸 Artistas</h3><div class="list-container">';
+      html += '<div class="list-section"><h3 class="list-title" style="overflow:hidden">🎸 Artistas ' + sortBtn('artistas') + '</h3><div class="list-container">';
       artList.forEach(function(item, i) { html += '<div class="list-item" onclick="selLista(\'artistas\',' + i + ',\'artista\')"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + 'x</span></div>'; });
       html += '</div></div>';
     }
     if (cityList.length > 0) {
-      html += '<div class="list-section"><h3 class="list-title">📍 Ciudades</h3><div class="list-container">';
+      html += '<div class="list-section"><h3 class="list-title" style="overflow:hidden">📍 Ciudades ' + sortBtn('ciudades') + '</h3><div class="list-container">';
       cityList.forEach(function(item, i) { html += '<div class="list-item" onclick="selLista(\'ciudades\',' + i + ',\'ciudad\')"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + 'x</span></div>'; });
       html += '</div></div>';
     }
     if (placeList.length > 0) {
-      html += '<div class="list-section"><h3 class="list-title">🏟️ Venues</h3><div class="list-container">';
+      html += '<div class="list-section"><h3 class="list-title" style="overflow:hidden">🏟️ Venues ' + sortBtn('lugares') + '</h3><div class="list-container">';
       placeList.forEach(function(item, i) { html += '<div class="list-item" onclick="selLista(\'lugares\',' + i + ',\'lugar\')"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + 'x</span></div>'; });
       html += '</div></div>';
     }
     if (yearList.length > 0) {
-      html += '<div class="list-section"><h3 class="list-title">📅 Años</h3><div class="list-container">';
+      html += '<div class="list-section"><h3 class="list-title" style="overflow:hidden">📅 Años ' + sortBtn('anos') + '</h3><div class="list-container">';
       yearList.forEach(function(item, i) { html += '<div class="list-item" onclick="selLista(\'anos\',' + i + ',\'ano\')"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + '</span></div>'; });
       html += '</div></div>';
     }
@@ -208,6 +228,13 @@ function render() {
 
   else if (page === 'buscar') {
     var s = search.toLowerCase();
+    var sa = searchArtista.toLowerCase();
+
+    var artsB = {};
+    eventos.forEach(function(e) { (e.grupos||'').split(',').map(function(g){return g.trim();}).filter(function(g){return g;}).forEach(function(a) { artsB[a] = (artsB[a]||0)+1; }); });
+    var artBuscarList = Object.keys(artsB).map(function(k){return [k,artsB[k]];}).sort(function(a,b){return a[0].localeCompare(b[0]);});
+    if (sa) artBuscarList = artBuscarList.filter(function(item){ return item[0].toLowerCase().indexOf(sa) >= 0; });
+
     var filt = eventos.filter(function(e) {
       if (filtroTipo !== 'todos' && e.tipo !== filtroTipo) return false;
       if (!s) return true;
@@ -220,19 +247,41 @@ function render() {
     var btnTodos = filtroTipo === 'todos' ? 'active' : '';
     var btnConc = filtroTipo === 'concierto' ? 'active' : '';
     var btnFest = filtroTipo === 'festival' ? 'active' : '';
+
+    if (!window._buscarTab) window._buscarTab = 'eventos';
+    var tabEv = window._buscarTab === 'eventos';
+
     var html = '<div class="container"><button class="back-btn" onclick="goTo(\'home\')">← Volver</button><div class="card"><h2 class="card-title">Buscar</h2>';
-    html += '<input id="searchInput" class="search-input" placeholder="Buscar..." value="' + escHtml(search) + '" oninput="updateSearch(this.value)" style="text-transform:none">';
-    html += '<div class="filter-bar"><button class="filter-btn ' + btnTodos + '" onclick="filtroTipo=\'todos\';render()">Todos</button><button class="filter-btn ' + btnConc + '" onclick="filtroTipo=\'concierto\';render()">Conciertos</button><button class="filter-btn ' + btnFest + '" onclick="filtroTipo=\'festival\';render()">Festivales</button></div>';
-    if (filt.length === 0) {
-      html += '<p style="text-align:center;color:#666;padding:30px">' + (search || filtroTipo !== 'todos' ? 'Sin resultados' : 'Escribe para buscar') + '</p>';
+    html += '<div style="display:flex;gap:8px;margin-bottom:12px">';
+    html += '<button onclick="window._buscarTab=\'eventos\';render()" style="flex:1;padding:12px;background:' + (tabEv?'#f00':'#000') + ';border:2px solid #f00;border-radius:8px;color:' + (tabEv?'#000':'#f00') + ';font-weight:900;font-size:18px;cursor:pointer">🔍 Eventos</button>';
+    html += '<button onclick="window._buscarTab=\'artistas\';render()" style="flex:1;padding:12px;background:' + (!tabEv?'#f00':'#000') + ';border:2px solid #f00;border-radius:8px;color:' + (!tabEv?'#000':'#f00') + ';font-weight:900;font-size:18px;cursor:pointer">🎸 Artistas</button>';
+    html += '</div>';
+
+    if (tabEv) {
+      html += '<input id="searchInput" class="search-input" placeholder="Buscar eventos..." value="' + escHtml(search) + '" oninput="updateSearch(this.value)" style="text-transform:none">';
+      html += '<div class="filter-bar"><button class="filter-btn ' + btnTodos + '" onclick="filtroTipo=\'todos\';render()">Todos</button><button class="filter-btn ' + btnConc + '" onclick="filtroTipo=\'concierto\';render()">Conciertos</button><button class="filter-btn ' + btnFest + '" onclick="filtroTipo=\'festival\';render()">Festivales</button></div>';
+      if (filt.length === 0) {
+        html += '<p style="text-align:center;color:#666;padding:30px">' + (search || filtroTipo !== 'todos' ? 'Sin resultados' : 'Escribe para buscar') + '</p>';
+      } else {
+        window._curEvs = filt;
+        filt.forEach(function(e, idx) { html += renderEvento(e, idx); });
+      }
     } else {
-      window._curEvs = filt;
-      filt.forEach(function(e, idx) { html += renderEvento(e, idx); });
+      html += '<input id="searchArtInput" class="search-input" placeholder="Buscar artista..." value="' + escHtml(searchArtista) + '" oninput="searchArtista=this.value;render()" style="text-transform:none">';
+      if (artBuscarList.length === 0) {
+        html += '<p style="text-align:center;color:#666;padding:30px">' + (sa ? 'Sin resultados' : 'Escribe para buscar') + '</p>';
+      } else {
+        artBuscarList.forEach(function(item) {
+          html += '<div class="list-item" onclick="detalle=\''+escHtml(item[0])+'\';tipoD=\'artista\';page=\'estadisticas\';render()"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + 'x</span></div>';
+        });
+      }
     }
     html += '</div></div>';
     app.innerHTML = html;
     var inp = document.getElementById('searchInput');
     if (inp) { inp.focus(); inp.setSelectionRange(search.length, search.length); }
+    var inpa = document.getElementById('searchArtInput');
+    if (inpa) { inpa.focus(); inpa.setSelectionRange(searchArtista.length, searchArtista.length); }
   }
 
   else if (page === 'datos') {
