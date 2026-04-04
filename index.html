@@ -16,54 +16,54 @@ body { font-family: 'Arial Black', Arial, sans-serif; background: #000; color: #
 #app { min-height: 100vh; background: #000; }
 .container { width: 100%; max-width: 600px; margin: 0 auto; padding: 8px; }
 .header { text-align: center; padding: 20px 10px 10px 10px; }
-.logo { font-size: 90px; margin-bottom: 4px; }
-.title { font-size: 52px; color: #f00; margin-bottom: 4px; text-transform: uppercase; }
-.subtitle { color: #999; font-size: 18px; text-transform: uppercase; }
-.btn { width: 100%; background: #1a0000; border: 3px solid #f00; border-radius: 12px; padding: 38px 10px; margin-bottom: 24px; cursor: pointer; }
-.btn-text { font-size: 36px; font-weight: 900; color: #f00; text-transform: uppercase; }
+.logo { font-size: 110px; margin-bottom: 8px; }
+.title { font-size: 64px; color: #f00; margin-bottom: 6px; text-transform: uppercase; }
+.subtitle { color: #999; font-size: 22px; text-transform: uppercase; }
+.btn { width: 100%; background: #1a0000; border: 3px solid #f00; border-radius: 14px; padding: 46px 10px; margin-bottom: 28px; cursor: pointer; }
+.btn-text { font-size: 42px; font-weight: 900; color: #f00; text-transform: uppercase; }
 .card { background: #0a0000; border: 2px solid #f00; border-radius: 15px; padding: 14px; }
-.card-title { font-size: 36px; color: #f00; margin-bottom: 16px; text-transform: uppercase; }
-.back-btn { display: block; width: 50%; background: #1a0000; border: 2px solid #f00; border-radius: 10px; color: #f00; font-size: 24px; font-weight: 900; padding: 16px 18px; margin-bottom: 12px; cursor: pointer; text-align: left; }
-.label { display: block; color: #f00; margin-bottom: 6px; font-size: 20px; text-transform: uppercase; font-weight: 900; }
-.input { width: 100%; padding: 18px; background: #000; border: 1px solid #f00; border-radius: 8px; color: #fff; font-size: 22px; margin-bottom: 16px; text-transform: uppercase; }
+.card-title { font-size: 44px; color: #f00; margin-bottom: 18px; text-transform: uppercase; }
+.back-btn { display: block; width: 50%; background: #1a0000; border: 2px solid #f00; border-radius: 10px; color: #f00; font-size: 28px; font-weight: 900; padding: 20px 20px; margin-bottom: 16px; cursor: pointer; text-align: left; }
+.label { display: block; color: #f00; margin-bottom: 8px; font-size: 24px; text-transform: uppercase; font-weight: 900; }
+.input { width: 100%; padding: 22px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #fff; font-size: 26px; margin-bottom: 18px; text-transform: uppercase; }
 .input::placeholder { text-transform: none; }
 .input[type=number] { text-transform: none; }
 .input[list] { -webkit-appearance: none; appearance: none; }
 .tipo-selector { display: flex; gap: 10px; margin-bottom: 10px; }
-.tipo-btn { flex: 1; padding: 18px; background: #000; border: 2px solid #f00; border-radius: 8px; color: #f00; font-weight: 900; cursor: pointer; font-size: 22px; }
+.tipo-btn { flex: 1; padding: 22px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #f00; font-weight: 900; cursor: pointer; font-size: 26px; }
 .tipo-btn.active-concierto { background: #f00; color: #000; border-color: #f00; }
 .tipo-btn.active-festival { background: #ffd700; color: #000; border-color: #ffd700; }
-.submit-btn { width: 100%; padding: 20px; background: #f00; color: #000; border: none; border-radius: 8px; font-size: 26px; font-weight: 900; cursor: pointer; margin-top: 8px; }
-.export-btn { width: 100%; padding: 20px; background: #000; border: 2px solid #f00; border-radius: 8px; color: #f00; font-size: 24px; font-weight: 900; cursor: pointer; margin-top: 12px; }
-.import-btn { width: 100%; padding: 20px; background: #000; border: 2px solid #ffd700; border-radius: 8px; color: #ffd700; font-size: 24px; font-weight: 900; cursor: pointer; margin-top: 12px; }
+.submit-btn { width: 100%; padding: 24px; background: #f00; color: #000; border: none; border-radius: 10px; font-size: 30px; font-weight: 900; cursor: pointer; margin-top: 10px; }
+.export-btn { width: 100%; padding: 24px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #f00; font-size: 28px; font-weight: 900; cursor: pointer; margin-top: 14px; }
+.import-btn { width: 100%; padding: 24px; background: #000; border: 2px solid #ffd700; border-radius: 10px; color: #ffd700; font-size: 28px; font-weight: 900; cursor: pointer; margin-top: 14px; }
 .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
 .stat-card { padding: 18px; border-radius: 12px; border: 2px solid; cursor: pointer; }
 .stat-concierto { background: linear-gradient(145deg, #ff0000, #8b0000); border-color: #ff0000; }
 .stat-festival { background: linear-gradient(145deg, #ffd700, #cc9900); border-color: #ffd700; }
 .stat-dinero { background: linear-gradient(145deg, #00aa00, #005500); border-color: #00ff00; grid-column: 1 / -1; }
-.stat-number { font-size: 44px; font-weight: 900; margin-bottom: 4px; }
-.stat-label { font-size: 16px; text-transform: uppercase; }
+.stat-number { font-size: 52px; font-weight: 900; margin-bottom: 6px; }
+.stat-label { font-size: 20px; text-transform: uppercase; }
 .stat-concierto .stat-number, .stat-concierto .stat-label { color: #fff; }
 .stat-festival .stat-number, .stat-festival .stat-label { color: #000; }
 .stat-dinero .stat-number, .stat-dinero .stat-label { color: #fff; }
 .list-section { background: rgba(139,0,0,0.1); border: 1px solid #f00; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
-.list-title { color: #f00; margin-bottom: 12px; font-size: 22px; text-transform: uppercase; }
+.list-title { color: #f00; margin-bottom: 14px; font-size: 28px; text-transform: uppercase; }
 .list-container { max-height: 620px; overflow-y: auto; }
-.list-item { background: #000; border: 1px solid #f00; padding: 18px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; cursor: pointer; }
-.list-name { color: #fff; font-weight: 700; font-size: 22px; }
-.list-badge { background: #f00; color: #000; padding: 6px 14px; border-radius: 15px; font-weight: 900; font-size: 18px; }
+.list-item { background: #000; border: 1px solid #f00; padding: 22px; border-radius: 10px; margin-bottom: 12px; display: flex; justify-content: space-between; cursor: pointer; }
+.list-name { color: #fff; font-weight: 700; font-size: 26px; }
+.list-badge { background: #f00; color: #000; padding: 8px 16px; border-radius: 15px; font-weight: 900; font-size: 22px; }
 .evento-card { background: #1a0000; border: 1px solid #f00; padding: 15px; border-radius: 10px; margin-bottom: 12px; }
-.evento-tipo { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 13px; font-weight: 900; text-transform: uppercase; margin-bottom: 8px; }
+.evento-tipo { display: inline-block; padding: 6px 14px; border-radius: 12px; font-size: 18px; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; }
 .tipo-concierto { background: #ff0000; color: #000; }
 .tipo-festival { background: #ffd700; color: #000; }
-.evento-nombre { color: #f00; font-size: 26px; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; }
-.evento-info { color: #999; font-size: 20px; margin-bottom: 4px; }
-.search-input { width: 100%; padding: 22px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #fff; font-size: 24px; margin-bottom: 14px; }
+.evento-nombre { color: #f00; font-size: 32px; font-weight: 900; margin-bottom: 12px; text-transform: uppercase; }
+.evento-info { color: #999; font-size: 24px; margin-bottom: 6px; }
+.search-input { width: 100%; padding: 26px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #fff; font-size: 28px; margin-bottom: 16px; }
 .filter-bar { display: flex; gap: 8px; margin-bottom: 15px; }
-.filter-btn { flex: 1; padding: 14px; background: #000; border: 2px solid #f00; border-radius: 8px; color: #f00; font-weight: 900; cursor: pointer; font-size: 19px; }
+.filter-btn { flex: 1; padding: 18px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #f00; font-weight: 900; cursor: pointer; font-size: 22px; }
 .filter-btn.active { background: #f00; color: #000; }
-.counter { text-align: center; color: #666; font-size: 20px; margin-top: 20px; }
-.delete-btn { background: none; border: none; cursor: pointer; padding: 5px; font-size: 28px; }
+.counter { text-align: center; color: #666; font-size: 26px; margin-top: 24px; }
+.delete-btn { background: none; border: none; cursor: pointer; padding: 8px; font-size: 36px; }
 </style>
 </head>
 <body>
@@ -145,14 +145,15 @@ function render() {
     if (detalle) {
       var evs = [];
       if (tipoD === 'artista') evs = eventos.filter(function(e) { return (e.grupos||'').split(',').map(function(g){return g.trim();}).indexOf(detalle) >= 0; });
-      else if (tipoD === 'ciudad') evs = eventos.filter(function(e) { return e.ciudad === detalle; });
-      else if (tipoD === 'lugar') evs = eventos.filter(function(e) { return e.lugar === detalle; });
-      else if (tipoD === 'ano') evs = eventos.filter(function(e) { return String(getAno(e)) === detalle; });
+      else if (tipoD === 'ciudad') evs = eventos.filter(function(e) { return detalle === '__sin_ciudad__' ? !e.ciudad : e.ciudad === detalle; });
+      else if (tipoD === 'lugar') evs = eventos.filter(function(e) { return detalle === '__sin_lugar__' ? !e.lugar : e.lugar === detalle; });
+      else if (tipoD === 'ano') evs = eventos.filter(function(e) { return detalle === '__sin_ano__' ? !getAno(e) : String(getAno(e)) === detalle; });
       else if (tipoD === 'tipo') evs = eventos.filter(function(e) { return e.tipo === detalle; });
       window._curEvs = evs;
       var totalPrecio = 0;
       evs.forEach(function(e) { if (e.precio) totalPrecio += parseFloat(e.precio) || 0; });
-      var html = '<div class="container"><button class="back-btn" onclick="detalle=null;render()">← Estadísticas</button><div class="card"><h2 class="card-title">' + escHtml(detalle) + '</h2><p style="color:#999;margin-bottom:15px">' + evs.length + ' evento' + (evs.length !== 1 ? 's' : '') + (totalPrecio > 0 ? ' · ' + totalPrecio.toFixed(2) + ' €' : '') + '</p>';
+      var tituloDetalle = detalle.indexOf('__sin_') === 0 ? '⚠️ Sin datos' : escHtml(detalle);
+      var html = '<div class="container"><button class="back-btn" onclick="detalle=null;render()">← Estadísticas</button><div class="card"><h2 class="card-title">' + tituloDetalle + '</h2><p style="color:#999;margin-bottom:15px">' + evs.length + ' evento' + (evs.length !== 1 ? 's' : '') + (totalPrecio > 0 ? ' · ' + totalPrecio.toFixed(2) + ' €' : '') + '</p>';
       evs.forEach(function(e, idx) { html += renderEvento(e, idx); });
       html += '</div></div>';
       app.innerHTML = html;
@@ -166,22 +167,24 @@ function render() {
     var sinCiudad = 0;
     eventos.forEach(function(e) { if(e.ciudad) cities[e.ciudad] = (cities[e.ciudad]||0)+1; else sinCiudad++; });
     var cityListBase = Object.keys(cities).map(function(k){return [k,cities[k]];});
-    if (sinCiudad > 0) cityListBase.push(['⚠️ Sin ciudad', sinCiudad]);
+    if (sinCiudad > 0) cityListBase.push(['__sin_ciudad__', sinCiudad]);
     var places = {};
     var sinLugar = 0;
     eventos.forEach(function(e) { if(e.lugar) places[e.lugar] = (places[e.lugar]||0)+1; else sinLugar++; });
     var placeListBase = Object.keys(places).map(function(k){return [k,places[k]];});
-    if (sinLugar > 0) placeListBase.push(['⚠️ Sin venue', sinLugar]);
+    if (sinLugar > 0) placeListBase.push(['__sin_lugar__', sinLugar]);
     var years = {};
     var sinAno = 0;
     eventos.forEach(function(e) { var y = getAno(e); if(y) years[y] = (years[y]||0)+1; else sinAno++; });
     var yearListBase = Object.keys(years).map(function(k){return [k,years[k]];});
-    if (sinAno > 0) yearListBase.push(['⚠️ Sin año', sinAno]);
+    if (sinAno > 0) yearListBase.push(['__sin_ano__', sinAno]);
 
     function sortList(list, key) {
-      var l = list.slice();
-      if (sortOrden[key] === 'az') return l.sort(function(a,b){return a[0].localeCompare(b[0]);});
-      return l.sort(function(a,b){return b[1]-a[1];});
+      var sins = list.filter(function(x){return x[0].indexOf('__sin_')===0;});
+      var normal = list.filter(function(x){return x[0].indexOf('__sin_')!==0;});
+      if (sortOrden[key] === 'az') normal.sort(function(a,b){return a[0].localeCompare(b[0]);});
+      else normal.sort(function(a,b){return b[1]-a[1];});
+      return normal.concat(sins);
     }
     function sortBtn(key) {
       var isAz = sortOrden[key] === 'az';
@@ -214,8 +217,11 @@ function render() {
       var preview = list.slice(0, 10);
       var s = '<div class="list-section"><h3 class="list-title" style="overflow:hidden">' + title + ' ' + sortBtn(listaKey) + '</h3><div class="list-container">';
       preview.forEach(function(item, i) {
-        var badge = tipoKey === 'ano' ? item[1] : item[1] + 'x';
-        s += '<div class="list-item" onclick="selLista(\'' + listaKey + '\',' + i + ',\'' + tipoKey + '\')"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + badge + '</span></div>';
+        var isSin = item[0].indexOf('__sin_') === 0;
+        var badge = (tipoKey === 'ano' && !isSin) ? item[1] : item[1] + 'x';
+        var label = isSin ? '⚠️ Sin datos' : escHtml(item[0]);
+        var style = isSin ? ' style="opacity:0.6"' : '';
+        s += '<div class="list-item"' + style + ' onclick="selLista(\'' + listaKey + '\',' + i + ',\'' + tipoKey + '\')"><span class="list-name">' + label + '</span><span class="list-badge">' + badge + '</span></div>';
       });
       s += '</div>';
       if (list.length > 10) {
@@ -314,8 +320,11 @@ function verListaCompleta(listaKey, tipoKey) {
   var titles = { artistas: '🎸 Artistas', ciudades: '📍 Ciudades', lugares: '🏟️ Venues', anos: '📅 Años' };
   var html = '<div class="container"><button class="back-btn" onclick="verListaCompleta(null,null)">← Estadísticas</button><div class="card"><h2 class="card-title">' + (titles[listaKey]||listaKey) + '</h2>';
   list.forEach(function(item, i) {
-    var badge = tipoKey === 'ano' ? item[1] : item[1] + 'x';
-    html += '<div class="list-item" onclick="selLista(\'' + listaKey + '\',' + i + ',\'' + tipoKey + '\')"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + badge + '</span></div>';
+    var isSin = item[0].indexOf('__sin_') === 0;
+    var badge = (tipoKey === 'ano' && !isSin) ? item[1] : item[1] + 'x';
+    var label = isSin ? '⚠️ Sin datos' : escHtml(item[0]);
+    var style = isSin ? ' style="opacity:0.6"' : '';
+    html += '<div class="list-item"' + style + ' onclick="selLista(\'' + listaKey + '\',' + i + ',\'' + tipoKey + '\')"><span class="list-name">' + label + '</span><span class="list-badge">' + badge + '</span></div>';
   });
   html += '</div></div>';
   app.innerHTML = html;
