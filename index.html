@@ -19,15 +19,16 @@ body { font-family: 'Arial Black', Arial, sans-serif; background: #000; color: #
 .logo { font-size: 90px; margin-bottom: 4px; }
 .title { font-size: 52px; color: #f00; margin-bottom: 4px; text-transform: uppercase; }
 .subtitle { color: #999; font-size: 18px; text-transform: uppercase; }
-.btn { width: 100%; background: #1a0000; border: 3px solid #f00; border-radius: 12px; padding: 30px 10px; margin-bottom: 14px; cursor: pointer; }
-.btn-text { font-size: 32px; font-weight: 900; color: #f00; text-transform: uppercase; }
+.btn { width: 100%; background: #1a0000; border: 3px solid #f00; border-radius: 12px; padding: 38px 10px; margin-bottom: 16px; cursor: pointer; }
+.btn-text { font-size: 36px; font-weight: 900; color: #f00; text-transform: uppercase; }
 .card { background: #0a0000; border: 2px solid #f00; border-radius: 15px; padding: 14px; }
 .card-title { font-size: 32px; color: #f00; margin-bottom: 12px; text-transform: uppercase; }
-.back-btn { display: block; width: 100%; background: #1a0000; border: 2px solid #f00; border-radius: 10px; color: #f00; font-size: 24px; font-weight: 900; padding: 16px 18px; margin-bottom: 12px; cursor: pointer; text-align: left; }
+.back-btn { display: block; width: 50%; background: #1a0000; border: 2px solid #f00; border-radius: 10px; color: #f00; font-size: 24px; font-weight: 900; padding: 16px 18px; margin-bottom: 12px; cursor: pointer; text-align: left; }
 .label { display: block; color: #f00; margin-bottom: 4px; font-size: 16px; text-transform: uppercase; font-weight: 900; }
 .input { width: 100%; padding: 14px; background: #000; border: 1px solid #f00; border-radius: 8px; color: #fff; font-size: 19px; margin-bottom: 12px; text-transform: uppercase; }
 .input::placeholder { text-transform: none; }
 .input[type=number] { text-transform: none; }
+.input[list] { -webkit-appearance: none; appearance: none; }
 .tipo-selector { display: flex; gap: 10px; margin-bottom: 10px; }
 .tipo-btn { flex: 1; padding: 14px; background: #000; border: 2px solid #f00; border-radius: 8px; color: #f00; font-weight: 900; cursor: pointer; font-size: 19px; }
 .tipo-btn.active-concierto { background: #f00; color: #000; border-color: #f00; }
@@ -40,14 +41,14 @@ body { font-family: 'Arial Black', Arial, sans-serif; background: #000; color: #
 .stat-concierto { background: linear-gradient(145deg, #ff0000, #8b0000); border-color: #ff0000; }
 .stat-festival { background: linear-gradient(145deg, #ffd700, #cc9900); border-color: #ffd700; }
 .stat-dinero { background: linear-gradient(145deg, #00aa00, #005500); border-color: #00ff00; grid-column: 1 / -1; }
-.stat-number { font-size: 50px; font-weight: 900; margin-bottom: 5px; }
-.stat-label { font-size: 17px; text-transform: uppercase; }
+.stat-number { font-size: 56px; font-weight: 900; margin-bottom: 5px; }
+.stat-label { font-size: 19px; text-transform: uppercase; }
 .stat-concierto .stat-number, .stat-concierto .stat-label { color: #fff; }
 .stat-festival .stat-number, .stat-festival .stat-label { color: #000; }
 .stat-dinero .stat-number, .stat-dinero .stat-label { color: #fff; }
 .list-section { background: rgba(139,0,0,0.1); border: 1px solid #f00; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
 .list-title { color: #f00; margin-bottom: 12px; font-size: 22px; text-transform: uppercase; }
-.list-container { max-height: 300px; overflow-y: auto; }
+.list-container { max-height: 620px; overflow-y: auto; }
 .list-item { background: #000; border: 1px solid #f00; padding: 18px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; cursor: pointer; }
 .list-name { color: #fff; font-weight: 700; font-size: 22px; }
 .list-badge { background: #f00; color: #000; padding: 6px 14px; border-radius: 15px; font-weight: 900; font-size: 18px; }
@@ -178,7 +179,7 @@ function render() {
     }
     function sortBtn(key) {
       var isAz = sortOrden[key] === 'az';
-      return '<button onclick="sortOrden[\'' + key + '\']=\'' + (isAz?'num':'az') + '\';render()" style="background:#000;border:1px solid #f00;color:#f00;border-radius:6px;padding:4px 10px;font-size:14px;font-weight:900;cursor:pointer;float:right">' + (isAz ? '1→9' : 'A-Z') + '</button>';
+      return '<button onclick="sortOrden[\'' + key + '\']=\'' + (isAz?'num':'az') + '\';render()" style="background:#000;border:2px solid #f00;color:#f00;border-radius:8px;padding:10px 18px;font-size:18px;font-weight:900;cursor:pointer;float:right">' + (isAz ? '1→9' : 'A-Z') + '</button>';
     }
 
     var artList = sortList(artListBase, 'artistas');
@@ -198,30 +199,29 @@ function render() {
     html += '<div class="stat-grid">';
     html += '<div class="stat-card stat-concierto" onclick="detalle=\'concierto\';tipoD=\'tipo\';render()"><div class="stat-number">' + conc + '</div><div class="stat-label">Conciertos</div></div>';
     html += '<div class="stat-card stat-festival" onclick="detalle=\'festival\';tipoD=\'tipo\';render()"><div class="stat-number">' + fest + '</div><div class="stat-label">Festivales</div></div>';
-    html += '<div class="stat-card" style="background:linear-gradient(145deg,#880088,#440044);border-color:#ff00ff;grid-column:1/-1"><div class="stat-number" style="color:#fff">' + totalArts + '</div><div class="stat-label" style="color:#fff">🎸 Artistas únicos</div></div>';
-    if (totalGasto > 0) html += '<div class="stat-card stat-dinero"><div class="stat-number">' + totalGasto.toFixed(2) + ' €</div><div class="stat-label">💶 Total gastado</div></div>';
+    html += '<div class="stat-card" style="background:linear-gradient(145deg,#880088,#440044);border-color:#ff00ff"><div class="stat-number" style="color:#fff">' + totalArts + '</div><div class="stat-label" style="color:#fff">🎸 Artistas</div></div>';
+    if (totalGasto > 0) html += '<div class="stat-card stat-dinero" style="grid-column:unset"><div class="stat-number">' + totalGasto.toFixed(2) + ' €</div><div class="stat-label">💶 Gastado</div></div>';
     html += '</div>';
 
-    if (artList.length > 0) {
-      html += '<div class="list-section"><h3 class="list-title" style="overflow:hidden">🎸 Artistas ' + sortBtn('artistas') + '</h3><div class="list-container">';
-      artList.forEach(function(item, i) { html += '<div class="list-item" onclick="selLista(\'artistas\',' + i + ',\'artista\')"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + 'x</span></div>'; });
-      html += '</div></div>';
+    function renderListSection(title, list, listaKey, tipoKey) {
+      if (list.length === 0) return '';
+      var preview = list.slice(0, 10);
+      var s = '<div class="list-section"><h3 class="list-title" style="overflow:hidden">' + title + ' ' + sortBtn(listaKey) + '</h3><div class="list-container">';
+      preview.forEach(function(item, i) {
+        var badge = tipoKey === 'ano' ? item[1] : item[1] + 'x';
+        s += '<div class="list-item" onclick="selLista(\'' + listaKey + '\',' + i + ',\'' + tipoKey + '\')"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + badge + '</span></div>';
+      });
+      s += '</div>';
+      if (list.length > 10) {
+        s += '<button onclick="verListaCompleta(\'' + listaKey + '\',\'' + tipoKey + '\')" style="width:100%;margin-top:8px;padding:12px;background:#000;border:2px solid #f00;border-radius:8px;color:#f00;font-size:18px;font-weight:900;cursor:pointer">Ver todos (' + list.length + ')</button>';
+      }
+      s += '</div>';
+      return s;
     }
-    if (cityList.length > 0) {
-      html += '<div class="list-section"><h3 class="list-title" style="overflow:hidden">📍 Ciudades ' + sortBtn('ciudades') + '</h3><div class="list-container">';
-      cityList.forEach(function(item, i) { html += '<div class="list-item" onclick="selLista(\'ciudades\',' + i + ',\'ciudad\')"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + 'x</span></div>'; });
-      html += '</div></div>';
-    }
-    if (placeList.length > 0) {
-      html += '<div class="list-section"><h3 class="list-title" style="overflow:hidden">🏟️ Venues ' + sortBtn('lugares') + '</h3><div class="list-container">';
-      placeList.forEach(function(item, i) { html += '<div class="list-item" onclick="selLista(\'lugares\',' + i + ',\'lugar\')"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + 'x</span></div>'; });
-      html += '</div></div>';
-    }
-    if (yearList.length > 0) {
-      html += '<div class="list-section"><h3 class="list-title" style="overflow:hidden">📅 Años ' + sortBtn('anos') + '</h3><div class="list-container">';
-      yearList.forEach(function(item, i) { html += '<div class="list-item" onclick="selLista(\'anos\',' + i + ',\'ano\')"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + item[1] + '</span></div>'; });
-      html += '</div></div>';
-    }
+    html += renderListSection('🎸 Artistas', artList, 'artistas', 'artista');
+    html += renderListSection('📍 Ciudades', cityList, 'ciudades', 'ciudad');
+    html += renderListSection('🏟️ Venues', placeList, 'lugares', 'lugar');
+    html += renderListSection('📅 Años', yearList, 'anos', 'ano');
     html += '</div></div>';
     app.innerHTML = html;
   }
@@ -294,6 +294,25 @@ function render() {
     html += '</div></div>';
     app.innerHTML = html;
   }
+}
+
+var _listaCompleta = null;
+var _listaCompletaTipo = null;
+
+function verListaCompleta(listaKey, tipoKey) {
+  if (!listaKey) { _listaCompleta = null; render(); return; }
+  _listaCompleta = listaKey;
+  _listaCompletaTipo = tipoKey;
+  var app = document.getElementById('app');
+  var list = window._listas[listaKey] || [];
+  var titles = { artistas: '🎸 Artistas', ciudades: '📍 Ciudades', lugares: '🏟️ Venues', anos: '📅 Años' };
+  var html = '<div class="container"><button class="back-btn" onclick="verListaCompleta(null,null)">← Estadísticas</button><div class="card"><h2 class="card-title">' + (titles[listaKey]||listaKey) + '</h2>';
+  list.forEach(function(item, i) {
+    var badge = tipoKey === 'ano' ? item[1] : item[1] + 'x';
+    html += '<div class="list-item" onclick="selLista(\'' + listaKey + '\',' + i + ',\'' + tipoKey + '\')"><span class="list-name">' + escHtml(item[0]) + '</span><span class="list-badge">' + badge + '</span></div>';
+  });
+  html += '</div></div>';
+  app.innerHTML = html;
 }
 
 function selLista(lista, idx, tipo) {
@@ -387,7 +406,7 @@ function guardar() {
     alert('Guardado! 🤘');
   }
   localStorage.setItem('eventos', JSON.stringify(eventos));
-  form = { tipo: form.tipo, nombre: '', grupos: '', ano: form.ano, lugar: '', ciudad: '', precio: '' };
+  form = { tipo: form.tipo, nombre: '', grupos: '', ano: '', lugar: '', ciudad: '', precio: '' };
   page = 'agregar';
   render();
 }
