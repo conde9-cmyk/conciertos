@@ -74,7 +74,7 @@ var page = 'home';
 var detalle = null;
 var tipoD = '';
 var editando = null;
-var form = { tipo: 'concierto', nombre: '', grupos: '', ano: '', lugar: '', ciudad: '', precio: '' };
+var form = { tipo: 'concierto', nombre: '', grupos: '', ano: '', lugar: '', ciudad: '', precio: '', valoracion: 0 };
 var search = '';
 var filtroTipo = 'todos';
 var searchArtista = '';
@@ -108,6 +108,7 @@ function renderEvento(e, idx) {
     (e.lugar ? '<div class="evento-info">🏟️ ' + escHtml(e.lugar) + '</div>' : '') +
     (e.ciudad ? '<div class="evento-info">📍 ' + escHtml(e.ciudad) + '</div>' : '') +
     (e.precio ? '<div class="evento-info">💶 ' + escHtml(String(e.precio)) + ' €</div>' : '') +
+    (e.valoracion ? '<div class="evento-info" style="font-size:28px">' + '💀'.repeat(e.valoracion) + '</div>' : '') +
     '</div>';
 }
 
@@ -137,6 +138,12 @@ function render() {
     ciudades.forEach(function(c) { html += '<option value="' + escHtml(c) + '">'; });
     html += '</datalist>';
     html += '<label class="label">Precio entrada (€)</label><input id="inPrecio" class="input" type="number" step="0.01" value="' + escHtml(form.precio) + '" style="text-transform:none">';
+    html += '<label class="label">Valoración</label><div style="display:flex;gap:8px;margin-bottom:18px" id="skullBox">';
+    for (var sk = 1; sk <= 5; sk++) {
+      html += '<button type="button" onclick="setValoracion(' + sk + ')" style="flex:1;font-size:36px;background:none;border:none;cursor:pointer;opacity:' + (form.valoracion >= sk ? '1' : '0.25') + '">💀</button>';
+    }
+    html += '<input type="hidden" id="inValoracion" value="' + form.valoracion + '">';
+    html += '</div>';
     html += '<button class="submit-btn" onclick="guardar()">' + (editando ? 'Actualizar' : 'Guardar') + '</button></div></div>';
     app.innerHTML = html;
   }
@@ -303,6 +310,7 @@ function render() {
     html += '<button class="import-btn" onclick="document.getElementById(\'fileInput\').click()">📥 Importar datos</button>';
     html += '<input type="file" id="fileInput" accept=".json" style="display:none" onchange="importar(this)">';
     html += '<p style="color:#666;font-size:20px;margin-top:20px;text-align:center">' + eventos.length + ' eventos guardados</p>';
+    html += '<div style="margin-top:30px;padding-top:20px;border-top:1px solid #300;text-align:center;color:#555;font-size:17px;line-height:1.8">🤘 Gracias a todos los que han hecho posible esta app y me han hecho pasar buenos ratos.<br><br>A los grupos, los recintos, los amigos y a todos los que alguna vez han gritado hasta quedarse sin voz. 🤘</div>';
     html += '</div></div>';
     app.innerHTML = html;
   }
@@ -376,7 +384,7 @@ function importar(input) {
 
 function goTo(p) {
   editando = null;
-  form = { tipo: 'concierto', nombre: '', grupos: '', ano: '', lugar: '', ciudad: '', precio: '' };
+  form = { tipo: 'concierto', nombre: '', grupos: '', ano: '', lugar: '', ciudad: '', precio: '', valoracion: 0 };
   page = p;
   history.pushState({page: p}, '', '');
   render();
@@ -389,6 +397,8 @@ window.addEventListener('popstate', function() {
 
 function setTipo(t) { form.tipo = t; render(); }
 
+function setValoracion(n) { form.valoracion = n; render(); }
+
 function updateSearch(val) { search = val; render(); }
 
 var paginaAntes = 'home';
@@ -398,7 +408,7 @@ function editar(id) {
   if (evento) {
     paginaAntes = page;
     editando = id;
-    form = { tipo: evento.tipo, nombre: evento.nombre, grupos: evento.grupos||'', ano: getAno(evento), lugar: evento.lugar||'', ciudad: evento.ciudad||'', precio: evento.precio||'' };
+    form = { tipo: evento.tipo, nombre: evento.nombre, grupos: evento.grupos||'', ano: getAno(evento), lugar: evento.lugar||'', ciudad: evento.ciudad||'', precio: evento.precio||'', valoracion: evento.valoracion||0 };
     page = 'agregar';
     render();
   }
@@ -412,7 +422,8 @@ function guardar() {
   var ciudad = document.getElementById('inCiudad').value.toUpperCase();
   var precio = document.getElementById('inPrecio').value;
   if (!nombre) { alert('Completa el nombre'); return; }
-  var eventoData = { tipo: form.tipo, nombre: nombre, grupos: grupos, ano: ano, lugar: lugar, ciudad: ciudad, precio: precio };
+  var valoracion = parseInt(document.getElementById('inValoracion').value || '0');
+  var eventoData = { tipo: form.tipo, nombre: nombre, grupos: grupos, ano: ano, lugar: lugar, ciudad: ciudad, precio: precio, valoracion: valoracion };
   if (editando) {
     for (var i = 0; i < eventos.length; i++) { if (eventos[i].id === editando) { eventos[i] = Object.assign({id: editando}, eventoData); break; } }
     editando = null;
