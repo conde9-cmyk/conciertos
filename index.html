@@ -17,7 +17,7 @@ body { font-family: 'Arial Black', Arial, sans-serif; background: #000; color: #
 .container { width: 100%; max-width: 600px; margin: 0 auto; padding: 8px; }
 .home-wrap { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 16px; }
 .header { text-align: center; padding: 0; }
-.logo { width: 280px; height: auto; margin: 0 auto 10px auto; display: block; }
+.logo { width: 380px; height: auto; margin: 0 auto 10px auto; display: block; }
 .title { font-size: 64px; color: #f00; margin-bottom: 6px; text-transform: uppercase; }
 .subtitle { color: #999; font-size: 22px; text-transform: uppercase; }
 .btn { width: 100%; background: #1a0000; border: 3px solid #f00; border-radius: 14px; padding: 46px 10px; margin-bottom: 28px; cursor: pointer; }
@@ -148,7 +148,7 @@ function render() {
     html += '</div>';
     html += '<label class="label">¿Tienes la entrada?</label>';
     html += '<div style="display:flex;gap:12px;margin-bottom:18px">';
-    html += '<button type="button" onclick="setEntrada(true)" style="flex:1;padding:20px;font-size:26px;font-weight:900;border-radius:10px;border:2px solid #f00;background:' + (form.entrada?'#f00':'#000') + ';color:' + (form.entrada?'#000':'#f00') + ';cursor:pointer">🎟️ Sí</button>';
+    html += '<button type="button" onclick="setEntrada(true)" style="flex:1;padding:20px;font-size:26px;font-weight:900;border-radius:10px;border:2px solid ' + (form.entrada?'#0c0':'#f00') + ';background:' + (form.entrada?'#0c0':'#000') + ';color:' + (form.entrada?'#000':'#f00') + ';cursor:pointer">🎟️ Sí</button>';
     html += '<button type="button" onclick="setEntrada(false)" style="flex:1;padding:20px;font-size:26px;font-weight:900;border-radius:10px;border:2px solid #f00;background:' + (!form.entrada?'#f00':'#000') + ';color:' + (!form.entrada?'#000':'#f00') + ';cursor:pointer">✖ No</button>';
     html += '</div>';
     html += '<button class="submit-btn" onclick="guardar()">' + (editando ? 'Actualizar' : 'Guardar') + '</button></div></div>';
@@ -417,7 +417,7 @@ function setTipo(t) { form.tipo = t; render(); }
 
 function setValoracion(n) { form.valoracion = n; render(); }
 
-function setEntrada(v) { form.entrada = v; render(); }
+function setEntrada(v) { form.entrada = !!v; render(); }
 
 function updateSearch(val) { search = val; render(); }
 
@@ -428,7 +428,7 @@ function editar(id) {
   if (evento) {
     paginaAntes = page;
     editando = id;
-    form = { tipo: evento.tipo, nombre: evento.nombre, grupos: evento.grupos||'', ano: getAno(evento), lugar: evento.lugar||'', ciudad: evento.ciudad||'', precio: evento.precio||'', valoracion: evento.valoracion||0, entrada: evento.entrada||false };
+    form = { tipo: evento.tipo, nombre: evento.nombre, grupos: evento.grupos||'', ano: getAno(evento), lugar: evento.lugar||'', ciudad: evento.ciudad||'', precio: evento.precio||'', valoracion: evento.valoracion||0, entrada: evento.entrada === true || evento.entrada === 'true' };
     page = 'agregar';
     render();
   }
