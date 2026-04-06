@@ -313,13 +313,16 @@ function render() {
   }
 
   else if (page === 'datos') {
-    var html = '<div style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:16px"><button class="back-btn" onclick="goTo(\'home\')">← Volver</button><div class="card" style="padding:24px"><h2 class="card-title">💾 Datos</h2>';
-    html += '<p style="color:#999;margin-bottom:20px;font-size:20px">Exporta tus datos para hacer una copia de seguridad o impórtalos desde otra copia.</p>';
+    var html = '<div style="min-height:100vh;display:flex;flex-direction:column;padding:12px;box-sizing:border-box">';
+    html += '<button class="back-btn" onclick="goTo(\'home\')">← Volver</button>';
+    html += '<div class="card" style="flex:1;padding:28px;display:flex;flex-direction:column;justify-content:center">';
+    html += '<h2 class="card-title">💾 Datos</h2>';
+    html += '<p style="color:#999;margin-bottom:28px;font-size:24px;line-height:1.5">Exporta tus datos para hacer una copia de seguridad o impórtalos desde otra copia.</p>';
     html += '<button class="submit-btn" onclick="exportar()">📤 Exportar datos</button>';
     html += '<button class="import-btn" onclick="document.getElementById(\'fileInput\').click()">📥 Importar datos</button>';
     html += '<input type="file" id="fileInput" accept=".json" style="display:none" onchange="importar(this)">';
-    html += '<p style="color:#666;font-size:20px;margin-top:20px;text-align:center">' + eventos.length + ' eventos guardados</p>';
-    html += '<div style="margin-top:30px;padding-top:20px;border-top:1px solid #300;text-align:center;color:#555;font-size:17px;line-height:1.8">🤘 Gracias a todos los que han hecho posible esta app y me han hecho pasar buenos ratos.<br><br>A los grupos, los recintos, los amigos y a todos los que alguna vez han gritado hasta quedarse sin voz. 🤘</div>';
+    html += '<p style="color:#666;font-size:24px;margin-top:28px;text-align:center">' + eventos.length + ' eventos guardados</p>';
+    html += '<div style="margin-top:32px;padding-top:24px;border-top:1px solid #300;text-align:center;color:#555;font-size:20px;line-height:2">🤘 Gracias a todos los que han hecho posible esta app y me han hecho pasar buenos ratos.<br><br>A los grupos, los recintos, los amigos y a todos los que alguna vez han gritado hasta quedarse sin voz. 🤘</div>';
     html += '</div></div>';
     app.innerHTML = html;
   }
