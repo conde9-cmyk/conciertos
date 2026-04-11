@@ -17,11 +17,11 @@ body { font-family: 'Arial Black', Arial, sans-serif; background: #000; color: #
 .container { width: 100%; max-width: 600px; margin: 0 auto; padding: 8px; }
 .home-wrap { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 16px; }
 .header { text-align: center; padding: 0; }
-.logo { width: 200px; height: auto; margin: 0 auto 10px auto; display: block; }
-.title { font-size: 38px; color: #f00; margin-bottom: 6px; text-transform: uppercase; }
-.subtitle { color: #999; font-size: 16px; text-transform: uppercase; }
-.btn { width: 100%; background: #1a0000; border: 3px solid #f00; border-radius: 14px; padding: 22px 10px; margin-bottom: 14px; cursor: pointer; }
-.btn-text { font-size: 24px; font-weight: 900; color: #f00; text-transform: uppercase; }
+.logo { width: 160px; height: auto; margin: 0 auto 10px auto; display: block; }
+.title { font-size: 32px; color: #f00; margin-bottom: 6px; text-transform: uppercase; }
+.subtitle { color: #999; font-size: 14px; text-transform: uppercase; }
+.btn { width: 100%; background: #1a0000; border: 3px solid #f00; border-radius: 14px; padding: 18px 10px; margin-bottom: 10px; cursor: pointer; }
+.btn-text { font-size: 21px; font-weight: 900; color: #f00; text-transform: uppercase; }
 .card { background: #0a0000; border: 2px solid #f00; border-radius: 15px; padding: 14px; }
 .card-title { font-size: 26px; color: #f00; margin-bottom: 18px; text-transform: uppercase; }
 .back-btn { display: block; width: 50%; background: #1a0000; border: 2px solid #f00; border-radius: 10px; color: #f00; font-size: 17px; font-weight: 900; padding: 12px 14px; margin-bottom: 16px; cursor: pointer; text-align: left; }
@@ -63,7 +63,7 @@ body { font-family: 'Arial Black', Arial, sans-serif; background: #000; color: #
 .filter-bar { display: flex; gap: 8px; margin-bottom: 15px; }
 .filter-btn { flex: 1; padding: 12px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #f00; font-weight: 900; cursor: pointer; font-size: 15px; }
 .filter-btn.active { background: #f00; color: #000; }
-.counter { text-align: center; color: #666; font-size: 15px; margin-top: 24px; }
+.counter { text-align: center; color: #666; font-size: 13px; margin-top: 24px; }
 .delete-btn { background: none; border: none; cursor: pointer; padding: 8px; font-size: 36px; }
 </style>
 </head>
@@ -108,8 +108,8 @@ function renderEvento(e, idx) {
     '<div class="evento-info">📅 ' + escHtml(String(getAno(e))) + '</div>' +
     (e.lugar ? '<div class="evento-info">🏟️ ' + escHtml(e.lugar) + '</div>' : '') +
     (e.ciudad ? '<div class="evento-info">📍 ' + escHtml(e.ciudad) + '</div>' : '') +
-    (e.precio ? '<div class="evento-info">💶 ' + escHtml(String(e.precio)) + ' €</div>' : '') +
-    (e.valoracion ? '<div class="evento-info" style="font-size:28px">' + '💀'.repeat(e.valoracion) + '</div>' : '') +
+    (e.precio ? '<div class="evento-info">💵 ' + escHtml(String(e.precio)) + ' €</div>' : '') +
+    (e.valoracion ? '<div class="evento-info" style="font-size:28px">' + '🎵'.repeat(e.valoracion) + '</div>' : '') +
     (e.entrada ? '<div class="evento-info">🎟️ Entrada guardada</div>' : '') +
     '</div>';
 }
@@ -142,7 +142,7 @@ function render() {
     html += '<label class="label">Precio entrada (€)</label><input id="inPrecio" class="input" type="number" step="0.01" value="' + escHtml(form.precio) + '" style="text-transform:none">';
     html += '<label class="label">Valoración</label><div style="display:flex;gap:8px;margin-bottom:18px" id="skullBox">';
     for (var sk = 1; sk <= 5; sk++) {
-      html += '<button type="button" onclick="setValoracion(' + sk + ')" style="flex:1;font-size:36px;background:none;border:none;cursor:pointer;opacity:' + (form.valoracion >= sk ? '1' : '0.25') + '">💀</button>';
+      html += '<button type="button" onclick="setValoracion(' + sk + ')" style="flex:1;font-size:36px;background:none;border:none;cursor:pointer;opacity:' + (form.valoracion >= sk ? '1' : '0.25') + '">🎵</button>';
     }
     html += '<input type="hidden" id="inValoracion" value="' + form.valoracion + '">';
     html += '</div>';
@@ -223,7 +223,7 @@ function render() {
     html += '<div class="stat-card stat-concierto" onclick="detalle=\'concierto\';tipoD=\'tipo\';render()"><div class="stat-number">' + conc + '</div><div class="stat-label">Conciertos</div></div>';
     html += '<div class="stat-card stat-festival" onclick="detalle=\'festival\';tipoD=\'tipo\';render()"><div class="stat-number">' + fest + '</div><div class="stat-label">Festivales</div></div>';
     html += '<div class="stat-card" style="background:linear-gradient(145deg,#880088,#440044);border-color:#ff00ff"><div class="stat-number" style="color:#fff">' + totalArts + '</div><div class="stat-label" style="color:#fff">🎸 Artistas</div></div>';
-    if (totalGasto > 0) html += '<div class="stat-card stat-dinero" style="grid-column:unset"><div class="stat-number">' + totalGasto.toFixed(2) + ' €</div><div class="stat-label">💶 Gastado</div></div>';
+    if (totalGasto > 0) html += '<div class="stat-card stat-dinero" style="grid-column:unset"><div class="stat-number">' + totalGasto.toFixed(2) + ' €</div><div class="stat-label">💵 Gastado</div></div>';
     html += '</div>';
 
     function renderListSection(title, list, listaKey, tipoKey) {
@@ -262,7 +262,6 @@ function render() {
     if (sa) artBuscarList = artBuscarList.filter(function(item){ return item[0].toLowerCase().indexOf(sa) >= 0; });
 
     var filt = eventos.filter(function(e) {
-      if (filtroTipo === 'entrada') return !!e.entrada;
       if (filtroTipo !== 'todos' && e.tipo !== filtroTipo) return false;
       if (!s) return true;
       return e.nombre.toLowerCase().indexOf(s) >= 0 ||
@@ -274,7 +273,6 @@ function render() {
     var btnTodos = filtroTipo === 'todos' ? 'active' : '';
     var btnConc = filtroTipo === 'concierto' ? 'active' : '';
     var btnFest = filtroTipo === 'festival' ? 'active' : '';
-    var btnEnt = filtroTipo === 'entrada' ? 'active' : '';
 
     if (!window._buscarTab) window._buscarTab = 'eventos';
     var tabEv = window._buscarTab === 'eventos';
@@ -287,7 +285,7 @@ function render() {
 
     if (tabEv) {
       html += '<input id="searchInput" class="search-input" placeholder="Buscar eventos..." value="' + escHtml(search) + '" oninput="updateSearch(this.value)" style="text-transform:none">';
-      html += '<div class="filter-bar"><button class="filter-btn ' + btnTodos + '" onclick="filtroTipo=\'todos\';render()">Todos</button><button class="filter-btn ' + btnConc + '" onclick="filtroTipo=\'concierto\';render()">Conciertos</button><button class="filter-btn ' + btnFest + '" onclick="filtroTipo=\'festival\';render()">Festivales</button><button class="filter-btn ' + btnEnt + '" onclick="filtroTipo=\'entrada\';render()">🎟️</button></div>';
+      html += '<div class="filter-bar"><button class="filter-btn ' + btnTodos + '" onclick="filtroTipo=\'todos\';render()">Todos</button><button class="filter-btn ' + btnConc + '" onclick="filtroTipo=\'concierto\';render()">Conciertos</button><button class="filter-btn ' + btnFest + '" onclick="filtroTipo=\'festival\';render()">Festivales</button></div>';
       if (filt.length === 0) {
         html += '<p style="text-align:center;color:#666;padding:30px">' + (search || filtroTipo !== 'todos' ? 'Sin resultados' : 'Escribe para buscar') + '</p>';
       } else {
