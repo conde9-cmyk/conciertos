@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <link rel="manifest" href="/conciertos/manifest.json">
 <meta name="theme-color" content="#ff0000">
 <meta name="mobile-web-app-capable" content="yes">
@@ -17,24 +17,24 @@ body { font-family: 'Arial Black', Arial, sans-serif; background: #000; color: #
 .container { width: 100%; max-width: 600px; margin: 0 auto; padding: 8px; }
 .home-wrap { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 16px; }
 .header { text-align: center; padding: 0; }
-.logo { width: 380px; height: auto; margin: 0 auto 10px auto; display: block; }
-.title { font-size: 64px; color: #f00; margin-bottom: 6px; text-transform: uppercase; }
-.subtitle { color: #999; font-size: 22px; text-transform: uppercase; }
-.btn { width: 100%; background: #1a0000; border: 3px solid #f00; border-radius: 14px; padding: 46px 10px; margin-bottom: 28px; cursor: pointer; }
-.btn-text { font-size: 42px; font-weight: 900; color: #f00; text-transform: uppercase; }
+.logo { width: 240px; height: auto; margin: 0 auto 10px auto; display: block; }
+.title { font-size: 44px; color: #f00; margin-bottom: 6px; text-transform: uppercase; }
+.subtitle { color: #999; font-size: 16px; text-transform: uppercase; }
+.btn { width: 100%; background: #1a0000; border: 3px solid #f00; border-radius: 14px; padding: 28px 10px; margin-bottom: 16px; cursor: pointer; }
+.btn-text { font-size: 28px; font-weight: 900; color: #f00; text-transform: uppercase; }
 .card { background: #0a0000; border: 2px solid #f00; border-radius: 15px; padding: 14px; }
-.card-title { font-size: 44px; color: #f00; margin-bottom: 18px; text-transform: uppercase; }
-.back-btn { display: block; width: 50%; background: #1a0000; border: 2px solid #f00; border-radius: 10px; color: #f00; font-size: 28px; font-weight: 900; padding: 20px 20px; margin-bottom: 16px; cursor: pointer; text-align: left; }
-.label { display: block; color: #f00; margin-bottom: 8px; font-size: 24px; text-transform: uppercase; font-weight: 900; }
-.input { width: 100%; padding: 22px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #fff; font-size: 26px; margin-bottom: 18px; text-transform: uppercase; }
+.card-title { font-size: 30px; color: #f00; margin-bottom: 18px; text-transform: uppercase; }
+.back-btn { display: block; width: 50%; background: #1a0000; border: 2px solid #f00; border-radius: 10px; color: #f00; font-size: 20px; font-weight: 900; padding: 14px 16px; margin-bottom: 16px; cursor: pointer; text-align: left; }
+.label { display: block; color: #f00; margin-bottom: 6px; font-size: 18px; text-transform: uppercase; font-weight: 900; }
+.input { width: 100%; padding: 14px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #fff; font-size: 20px; margin-bottom: 12px; text-transform: uppercase; }
 .input::placeholder { text-transform: none; }
 .input[type=number] { text-transform: none; }
 .input[list] { -webkit-appearance: none; appearance: none; }
 .tipo-selector { display: flex; gap: 10px; margin-bottom: 10px; }
-.tipo-btn { flex: 1; padding: 22px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #f00; font-weight: 900; cursor: pointer; font-size: 26px; }
+.tipo-btn { flex: 1; padding: 14px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #f00; font-weight: 900; cursor: pointer; font-size: 20px; }
 .tipo-btn.active-concierto { background: #f00; color: #000; border-color: #f00; }
 .tipo-btn.active-festival { background: #ffd700; color: #000; border-color: #ffd700; }
-.submit-btn { width: 100%; padding: 24px; background: #f00; color: #000; border: none; border-radius: 10px; font-size: 30px; font-weight: 900; cursor: pointer; margin-top: 10px; }
+.submit-btn { width: 100%; padding: 16px; background: #f00; color: #000; border: none; border-radius: 10px; font-size: 22px; font-weight: 900; cursor: pointer; margin-top: 10px; }
 .export-btn { width: 100%; padding: 24px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #f00; font-size: 28px; font-weight: 900; cursor: pointer; margin-top: 14px; }
 .import-btn { width: 100%; padding: 24px; background: #000; border: 2px solid #ffd700; border-radius: 10px; color: #ffd700; font-size: 28px; font-weight: 900; cursor: pointer; margin-top: 14px; }
 .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
@@ -42,28 +42,28 @@ body { font-family: 'Arial Black', Arial, sans-serif; background: #000; color: #
 .stat-concierto { background: linear-gradient(145deg, #ff0000, #8b0000); border-color: #ff0000; }
 .stat-festival { background: linear-gradient(145deg, #ffd700, #cc9900); border-color: #ffd700; }
 .stat-dinero { background: linear-gradient(145deg, #00aa00, #005500); border-color: #00ff00; grid-column: 1 / -1; }
-.stat-number { font-size: 52px; font-weight: 900; margin-bottom: 6px; }
-.stat-label { font-size: 20px; text-transform: uppercase; }
+.stat-number { font-size: 38px; font-weight: 900; margin-bottom: 6px; }
+.stat-label { font-size: 15px; text-transform: uppercase; }
 .stat-concierto .stat-number, .stat-concierto .stat-label { color: #fff; }
 .stat-festival .stat-number, .stat-festival .stat-label { color: #000; }
 .stat-dinero .stat-number, .stat-dinero .stat-label { color: #fff; }
 .list-section { background: rgba(139,0,0,0.1); border: 1px solid #f00; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
-.list-title { color: #f00; margin-bottom: 14px; font-size: 28px; text-transform: uppercase; }
+.list-title { color: #f00; margin-bottom: 10px; font-size: 20px; text-transform: uppercase; }
 .list-container { max-height: 620px; overflow-y: auto; }
 .list-item { background: #000; border: 1px solid #f00; padding: 22px; border-radius: 10px; margin-bottom: 12px; display: flex; justify-content: space-between; cursor: pointer; }
-.list-name { color: #fff; font-weight: 700; font-size: 26px; }
-.list-badge { background: #f00; color: #000; padding: 8px 16px; border-radius: 15px; font-weight: 900; font-size: 22px; }
+.list-name { color: #fff; font-weight: 700; font-size: 18px; }
+.list-badge { background: #f00; color: #000; padding: 5px 12px; border-radius: 15px; font-weight: 900; font-size: 15px; }
 .evento-card { background: #1a0000; border: 1px solid #f00; padding: 15px; border-radius: 10px; margin-bottom: 12px; }
 .evento-tipo { display: inline-block; padding: 6px 14px; border-radius: 12px; font-size: 18px; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; }
 .tipo-concierto { background: #ff0000; color: #000; }
 .tipo-festival { background: #ffd700; color: #000; }
-.evento-nombre { color: #f00; font-size: 32px; font-weight: 900; margin-bottom: 12px; text-transform: uppercase; }
-.evento-info { color: #999; font-size: 24px; margin-bottom: 6px; }
-.search-input { width: 100%; padding: 26px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #fff; font-size: 28px; margin-bottom: 16px; }
+.evento-nombre { color: #f00; font-size: 22px; font-weight: 900; margin-bottom: 12px; text-transform: uppercase; }
+.evento-info { color: #999; font-size: 16px; margin-bottom: 6px; }
+.search-input { width: 100%; padding: 16px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #fff; font-size: 18px; margin-bottom: 16px; }
 .filter-bar { display: flex; gap: 8px; margin-bottom: 15px; }
-.filter-btn { flex: 1; padding: 18px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #f00; font-weight: 900; cursor: pointer; font-size: 22px; }
+.filter-btn { flex: 1; padding: 12px; background: #000; border: 2px solid #f00; border-radius: 10px; color: #f00; font-weight: 900; cursor: pointer; font-size: 15px; }
 .filter-btn.active { background: #f00; color: #000; }
-.counter { text-align: center; color: #666; font-size: 26px; margin-top: 24px; }
+.counter { text-align: center; color: #666; font-size: 18px; margin-top: 24px; }
 .delete-btn { background: none; border: none; cursor: pointer; padding: 8px; font-size: 36px; }
 </style>
 </head>
