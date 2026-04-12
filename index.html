@@ -12,7 +12,7 @@
 <title>🤘 Mis Conciertos</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Arial Black', Arial, sans-serif; background: #000; color: #fff; }
+body { font-family: 'Arial Black', Arial, sans-serif; background: #000; color: #fff; font-size: var(--fs, 15px); }
 #app { min-height: 100vh; background: #000; display: flex; flex-direction: column; }
 .container { width: 100%; max-width: 600px; margin: 0 auto; padding: 8px; }
 .home-wrap { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 16px; }
@@ -71,6 +71,17 @@ body { font-family: 'Arial Black', Arial, sans-serif; background: #000; color: #
 <div id="app"></div>
 <script>
 var eventos = JSON.parse(localStorage.getItem('eventos') || '[]');
+var opciones = JSON.parse(localStorage.getItem('opciones') || '{"tamano":2,"acento":"#ff0000","fondo":"#000000","modoOscuro":true}');
+
+function aplicarOpciones() {
+  var sizes = [12,14,16,19,22];
+  var fs = sizes[opciones.tamano] || 16;
+  document.documentElement.style.setProperty('--fs', fs + 'px');
+  document.documentElement.style.setProperty('--acento', opciones.acento || '#ff0000');
+  var bg = opciones.modoOscuro ? (opciones.fondo || '#000000') : '#f0f0f0';
+  document.body.style.background = bg;
+  document.getElementById('app').style.background = bg;
+}
 var page = 'home';
 var detalle = null;
 var tipoD = '';
@@ -115,10 +126,11 @@ function renderEvento(e, idx) {
 }
 
 function render() {
+  aplicarOpciones();
   var app = document.getElementById('app');
 
   if (page === 'home') {
-    app.innerHTML = '<div class="home-wrap"><div class="header"><img class="logo" src="icon.png" alt="logo"><h1 class="title">Mis Conciertos</h1><p class="subtitle">Metal Archives</p></div><div class="container"><button class="btn" onclick="goTo(\'agregar\')"><span class="btn-text">➕ Agregar</span></button><button class="btn" onclick="goTo(\'estadisticas\')"><span class="btn-text">📊 Estadísticas</span></button><button class="btn" onclick="goTo(\'buscar\')"><span class="btn-text">🔍 Buscar</span></button><button class="btn" onclick="goTo(\'datos\')"><span class="btn-text">💾 Datos</span></button><div class="counter">' + eventos.length + ' eventos</div></div></div>';
+    app.innerHTML = '<div class="home-wrap"><div class="header"><img class="logo" src="icon.png" alt="logo"><h1 class="title">Mis Conciertos</h1><p class="subtitle">Metal Archives</p></div><div class="container"><button class="btn" onclick="goTo(\'agregar\')"><span class="btn-text">➕ Agregar</span></button><button class="btn" onclick="goTo(\'estadisticas\')"><span class="btn-text">📊 Estadísticas</span></button><button class="btn" onclick="goTo(\'buscar\')"><span class="btn-text">🔍 Buscar</span></button><button class="btn" onclick="goTo(\'datos\')"><span class="btn-text">💾 Datos</span></button><button class="btn" onclick="goTo(\'opciones\')"><span class="btn-text">⚙️ Opciones</span></button><div class="counter">' + eventos.length + ' eventos</div></div></div>';
   }
 
   else if (page === 'agregar') {
@@ -310,17 +322,53 @@ function render() {
     if (inpa) { inpa.focus(); inpa.setSelectionRange(searchArtista.length, searchArtista.length); }
   }
 
+  else if (page === 'opciones') {
+    var tamLabels = ['XS','S','M','L','XL'];
+    var colAcentos = ['#ff0000','#ff6600','#ffcc00','#00cc44','#0088ff','#cc00ff','#ff0088'];
+    var colFondos = ['#000000','#0a0000','#000a00','#00000a','#111111','#1a0a00','#0a001a'];
+    var ac = opciones.acento || '#ff0000';
+    var html = '<div style="min-height:100vh;display:flex;flex-direction:column;padding:12px;box-sizing:border-box">';
+    html += '<button class="back-btn" onclick="goTo(\'home\')">← Volver</button>';
+    html += '<div class="card" style="flex:1;padding:20px;display:flex;flex-direction:column;gap:22px">';
+    html += '<h2 class="card-title">⚙️ Opciones</h2>';
+    html += '<div><div class="label">📏 Tamaño de letra</div><div style="display:flex;gap:8px;margin-top:8px">';
+    tamLabels.forEach(function(t, i) {
+      var act = opciones.tamano === i;
+      html += '<button onclick="guardarOpcion(\'tamano\',' + i + ')" style="flex:1;padding:12px;font-size:15px;font-weight:900;border-radius:8px;border:2px solid ' + (act ? ac : '#333') + ';background:' + (act ? ac : '#000') + ';color:' + (act ? '#000' : '#666') + ';cursor:pointer">' + t + '</button>';
+    });
+    html += '</div></div>';
+    html += '<div><div class="label">🎨 Color de acento</div><div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap">';
+    colAcentos.forEach(function(col) {
+      var act = opciones.acento === col;
+      html += '<button onclick="guardarOpcion(\'acento\',\''+col+'\')" style="width:46px;height:46px;border-radius:50%;background:'+col+';border:'+(act?'3px solid #fff':'2px solid #333')+';cursor:pointer"></button>';
+    });
+    html += '</div></div>';
+    html += '<div><div class="label">🌙 Modo</div><div style="display:flex;gap:8px;margin-top:8px">';
+    html += '<button onclick="guardarOpcion(\'modoOscuro\',true)" style="flex:1;padding:12px;font-size:15px;font-weight:900;border-radius:8px;border:2px solid '+(opciones.modoOscuro?ac:'#333')+';background:'+(opciones.modoOscuro?ac:'#000')+';color:'+(opciones.modoOscuro?'#000':'#666')+';cursor:pointer">🌙 Oscuro</button>';
+    html += '<button onclick="guardarOpcion(\'modoOscuro\',false)" style="flex:1;padding:12px;font-size:15px;font-weight:900;border-radius:8px;border:2px solid '+(!opciones.modoOscuro?ac:'#333')+';background:'+(!opciones.modoOscuro?ac:'#000')+';color:'+(!opciones.modoOscuro?'#000':'#666')+';cursor:pointer">☀️ Claro</button>';
+    html += '</div></div>';
+    html += '<div><div class="label">🖤 Color de fondo</div><div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap">';
+    colFondos.forEach(function(col) {
+      var act = opciones.fondo === col;
+      html += '<button onclick="guardarOpcion(\'fondo\',\''+col+'\')" style="width:46px;height:46px;border-radius:8px;background:'+col+';border:'+(act?'3px solid #fff':'2px solid #444')+';cursor:pointer"></button>';
+    });
+    html += '</div></div>';
+    html += '<button onclick="resetOpciones()" style="width:100%;padding:14px;background:#000;border:2px solid #444;border-radius:10px;color:#555;font-size:14px;font-weight:900;cursor:pointer">↺ Restablecer por defecto</button>';
+    html += '</div></div>';
+    app.innerHTML = html;
+  }
+
   else if (page === 'datos') {
     var html = '<div style="min-height:100vh;display:flex;flex-direction:column;padding:12px;box-sizing:border-box">';
     html += '<button class="back-btn" onclick="goTo(\'home\')">← Volver</button>';
     html += '<div class="card" style="flex:1;padding:32px;display:flex;flex-direction:column;justify-content:space-evenly">';
     html += '<h2 style="font-size:64px;color:#f00;text-transform:uppercase">💾 Datos</h2>';
-    html += '<p style="color:#999;font-size:34px;line-height:1.5">Exporta tus datos para hacer una copia de seguridad o impórtalos desde otra copia.</p>';
-    html += '<button style="width:100%;padding:30px;background:#f00;color:#000;border:none;border-radius:10px;font-size:36px;font-weight:900;cursor:pointer" onclick="exportar()">📤 Exportar datos</button>';
-    html += '<button style="width:100%;padding:30px;background:#000;border:2px solid #ffd700;border-radius:10px;color:#ffd700;font-size:36px;font-weight:900;cursor:pointer" onclick="document.getElementById(\'fileInput\').click()">📥 Importar datos</button>';
+    html += '<p style="color:#999;font-size:15px;margin-bottom:16px">Exporta tus datos para hacer una copia de seguridad o impórtalos desde otra copia.</p>';
+    html += '<button class="submit-btn" onclick="exportar()">📤 Exportar datos</button>';
+    html += '<button class="import-btn" onclick="document.getElementById(\'fileInput\').click()">📥 Importar datos</button>';
     html += '<input type="file" id="fileInput" accept=".json" style="display:none" onchange="importar(this)">';
-    html += '<p style="color:#666;font-size:32px;text-align:center">' + eventos.length + ' eventos guardados</p>';
-    html += '<div style="padding-top:20px;border-top:1px solid #300;text-align:center;color:#666;font-size:26px;line-height:1.9">🤘 Gracias a todos los que han hecho posible esta app y me han hecho pasar buenos ratos.<br><br>A los grupos, los recintos, los amigos y a todos los que alguna vez han gritado hasta quedarse sin voz. 🤘</div>';
+    html += '<p style="color:#666;font-size:14px;margin-top:12px;text-align:center">' + eventos.length + ' eventos guardados</p>';
+    html += '<div style="padding-top:14px;border-top:1px solid #300;text-align:center;color:#555;font-size:13px;line-height:1.8">🤘 Gracias a todos los que han hecho posible esta app y me han hecho pasar buenos ratos.<br><br>A los grupos, los recintos, los amigos y a todos los que alguna vez han gritado hasta quedarse sin voz. 🤘</div>';
     html += '</div></div>';
     app.innerHTML = html;
   }
@@ -415,6 +463,18 @@ window.addEventListener('popstate', function() {
 });
 
 function setTipo(t) { form.tipo = t; render(); }
+
+function guardarOpcion(key, val) {
+  opciones[key] = val;
+  localStorage.setItem('opciones', JSON.stringify(opciones));
+  render();
+}
+
+function resetOpciones() {
+  opciones = {tamano:2, acento:'#ff0000', fondo:'#000000', modoOscuro:true};
+  localStorage.setItem('opciones', JSON.stringify(opciones));
+  render();
+}
 
 function setValoracion(n) {
   var nb = document.getElementById('inNombre'); if (nb) form.nombre = nb.value;
