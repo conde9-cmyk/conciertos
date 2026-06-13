@@ -172,7 +172,7 @@ function render() {
   var app = document.getElementById('app');
 
   if (page === 'home') {
-    app.innerHTML = '<div class="home-wrap"><div class="header"><img class="logo" src="icon.png" alt="logo"><h1 class="title">Mis Conciertos</h1><p class="subtitle">Metal Archives</p></div><div class="container"><button class="btn" onclick="goTo(\'agregar\')"><span class="btn-text">➕ Agregar</span></button><button class="btn" onclick="goTo(\'estadisticas\')"><span class="btn-text">📊 Estadísticas</span></button><button class="btn" onclick="goTo(\'buscar\')"><span class="btn-text">🔍 Buscar</span></button><button class="btn" onclick="goTo(\'datos\')"><span class="btn-text">💾 Datos</span></button><button class="btn" onclick="goTo(\'opciones\')"><span class="btn-text">⚙️ Opciones</span></button><div class="counter">' + eventos.length + ' eventos</div></div></div>';
+    app.innerHTML = '<div class="home-wrap"><div class="header"><img class="logo" src="icon.png" alt="logo"><h1 class="title">Mis Conciertos</h1><p class="subtitle">Metal Archives</p></div><div class="container"><button class="btn" onclick="goTo(\'agregar\')"><span class="btn-text">➕ Agregar</span></button><button class="btn" onclick="goTo(\'estadisticas\')"><span class="btn-text">📊 Estadísticas</span></button><button class="btn" onclick="goTo(\'buscar\')"><span class="btn-text">🔍 Buscar</span></button><button class="btn" onclick="goTo(\'datos\')"><span class="btn-text">💾 Datos</span></button><button class="btn" onclick="goTo(\'opciones\')"><span class="btn-text">⚙️ Opciones</span></button><button class="btn" onclick="goTo(\'entradas\')"><span class="btn-text">🎟️ Mis Entradas</span></button><div class="counter">' + eventos.length + ' eventos</div></div></div>';
   }
 
   else if (page === 'agregar') {
@@ -364,6 +364,87 @@ function render() {
     if (inpa) { inpa.focus(); inpa.setSelectionRange(searchArtista.length, searchArtista.length); }
   }
 
+  else if (page === 'entradas') {
+    if (!window._entSort) window._entSort = 'az';
+    if (!window._entSearch) window._entSearch = '';
+
+    if (!window._entMostrar) window._entMostrar = 'con';
+    var lista = eventos.filter(function(e){
+      var tiene = e.entrada === true || e.entrada === 'true';
+      return window._entMostrar === 'con' ? tiene : !tiene;
+    });
+
+    // Filter by search
+    var sq = window._entSearch.toLowerCase();
+    if (sq) {
+      lista = lista.filter(function(e){
+        return e.nombre.toLowerCase().indexOf(sq) >= 0 ||
+               (e.lugar||'').toLowerCase().indexOf(sq) >= 0 ||
+               (e.ciudad||'').toLowerCase().indexOf(sq) >= 0 ||
+               String(getAno(e)).indexOf(sq) >= 0;
+      });
+    }
+
+    // Sort
+    if (window._entSort === 'az') lista.sort(function(a,b){ return a.nombre.localeCompare(b.nombre); });
+    else if (window._entSort === 'za') lista.sort(function(a,b){ return b.nombre.localeCompare(a.nombre); });
+    else if (window._entSort === 'ano_asc') lista.sort(function(a,b){ return (getAno(a)||0)-(getAno(b)||0); });
+    else if (window._entSort === 'ano_desc') lista.sort(function(a,b){ return (getAno(b)||0)-(getAno(a)||0); });
+
+    if (!window._entMostrar) window._entMostrar = 'con';
+    var sortOpts = [
+      ['az','A → Z'], ['za','Z → A'],
+      ['ano_asc','Año ↑'], ['ano_desc','Año ↓']
+    ];
+
+    var html = '<div class="container"><button class="back-btn" onclick="goTo(\'home\')">← Volver</button>';
+    html += '<div class="card">';
+    html += '<h2 class="card-title">🎟️ Mis Entradas</h2>';
+
+    // Search
+    html += '<input class="search-input" placeholder="Buscar..." value="' + escHtml(window._entSearch) + '" oninput="window._entSearch=this.value;render()" style="text-transform:none;margin-bottom:10px">';
+
+    // Sort buttons - single toggle each
+    var isAZ = window._entSort === 'az' || window._entSort === 'za';
+    var azLabel = (window._entSort === 'az') ? 'A → Z' : 'Z → A';
+    var anoLabel = (window._entSort === 'ano_desc') ? 'Año ↓' : 'Año ↑';
+    html += '<div style="display:flex;gap:6px;margin-bottom:10px">';
+    html += '<button onclick="window._entSort=(window._entSort===\'az\'?\'za\':\'az\');render()" style="flex:1;padding:10px;font-size:13px;font-weight:900;border-radius:8px;border:2px solid #f00;background:'+(isAZ?'#f00':'#000')+';color:'+(isAZ?'#000':'#f00')+';cursor:pointer">'+azLabel+'</button>';
+    html += '<button onclick="window._entSort=(window._entSort===\'ano_asc\'?\'ano_desc\':\'ano_asc\');render()" style="flex:1;padding:10px;font-size:13px;font-weight:900;border-radius:8px;border:2px solid #f00;background:'+(!isAZ?'#f00':'#000')+';color:'+(!isAZ?'#000':'#f00')+';cursor:pointer">'+anoLabel+'</button>';
+    html += '<button onclick="window._entMostrar=(window._entMostrar===\'con\'?\'sin\':\'con\');render()" style="flex:1;padding:10px;font-size:13px;font-weight:900;border-radius:8px;border:2px solid '+(window._entMostrar==='con'?'#0c0':'#f00')+';background:'+(window._entMostrar==='con'?'#0c0':'#f00')+';color:#000;cursor:pointer">'+(window._entMostrar==='con'?'🎟️ Tengo':'❌ Faltan')+'</button>';
+    html += '</div>';
+
+    // Count
+    html += '<p style="color:#666;font-size:13px;margin-bottom:12px">'+lista.length+' entrada'+(lista.length!==1?'s':'')+' encontrada'+(lista.length!==1?'s':'')+'</p>';
+
+    if (lista.length === 0) {
+      html += '<p style="text-align:center;color:#555;padding:30px;font-size:15px">'+(sq?'Sin resultados':'No tienes entradas guardadas')+'</p>';
+    } else {
+      lista.forEach(function(e, idx) {
+        var realIdx = eventos.indexOf(e);
+        var tipo = e.tipo === 'festival' ? 'FESTIVAL' : 'CONCIERTO';
+        var tipoBg = e.tipo === 'festival' ? '#ffd700' : '#f00';
+        var tipoColor = '#000';
+        html += '<div style="background:#1a0000;border:1px solid #f00;border-radius:8px;padding:10px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">';
+        html += '<div style="flex:1">';
+        html += '<span style="background:'+tipoBg+';color:'+tipoColor+';padding:2px 6px;border-radius:5px;font-size:10px;font-weight:900">'+tipo+'</span>';
+        html += '<div style="color:#f00;font-size:15px;font-weight:900;margin-top:4px">'+escHtml(e.nombre)+'</div>';
+        var meta = [];
+        if (getAno(e)) meta.push('📅 '+getAno(e));
+        if (e.lugar) meta.push('📍 '+escHtml(e.lugar));
+        if (meta.length) html += '<div style="color:#888;font-size:12px;margin-top:2px">'+meta.join(' · ')+'</div>';
+        html += '</div>';
+        html += '<button style="background:none;border:none;cursor:pointer;font-size:20px;padding:4px" onclick="editarDesde(\'entradas\','+realIdx+')">✏️</button>';
+        html += '</div>';
+      });
+    }
+
+    html += '</div></div>';
+    app.innerHTML = html;
+    var inp = document.querySelector('.search-input');
+    if (inp && window._entSearch) { inp.focus(); inp.setSelectionRange(window._entSearch.length, window._entSearch.length); }
+  }
+
   else if (page === 'opciones') {
     var tamLabels = ['XS','S','M','L','XL'];
     var colAcentos = ['#ff0000','#ff6600','#ffcc00','#00cc44','#0088ff','#cc00ff','#ff0088'];
@@ -543,6 +624,16 @@ function setEntrada(v) {
 function updateSearch(val) { search = val; render(); }
 
 var paginaAntes = 'home';
+
+function editarDesde(origen, idx) {
+  paginaAntes = origen;
+  var evento = eventos[idx];
+  if (!evento) return;
+  editando = evento.id;
+  form = { tipo: evento.tipo, nombre: evento.nombre, grupos: evento.grupos||'', ano: getAno(evento), lugar: evento.lugar||'', ciudad: evento.ciudad||'', precio: evento.precio||'', valoracion: evento.valoracion||0, entrada: evento.entrada===true||evento.entrada==='true' };
+  page = 'agregar';
+  render();
+}
 function editar(id) {
   var evento = null;
   for (var i = 0; i < eventos.length; i++) { if (eventos[i].id === id) { evento = eventos[i]; break; } }
